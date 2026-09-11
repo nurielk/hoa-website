@@ -75,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           <div>
             <span style={{ fontSize: '1.4rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
-              HOA<span style={{ color: '#3b82f6' }}>.SYSTEM</span>
+              DayarPlus<span style={{ color: '#3b82f6' }}>.SYSTEM</span>
             </span>
             <span
               style={{

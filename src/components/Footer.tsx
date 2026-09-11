@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <Building2 size={20} color="#ffffff" />
               </div>
               <span style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>
-                HOA<span style={{ color: '#3b82f6' }}>.SYSTEM</span>
+                DayarPlus<span style={{ color: '#3b82f6' }}>.SYSTEM</span>
               </span>
             </div>
 

@@ -2,7 +2,7 @@ import { NavItem, FeatureItem, TargetAudience, PricingPlan, Testimonial, FaqItem
 
 export const contentData = {
   he: {
-    siteTitle: 'HOA System - האפליקציה המתקדמת לניהול הבניין',
+    siteTitle: 'DayarPlus - האפליקציה המתקדמת לניהול הבניין',
     nav: [
       { id: 'features', label: 'תכונות' },
       { id: 'solutions', label: 'למי זה מתאים' },
@@ -24,7 +24,7 @@ export const contentData = {
     hero: {
       badge: '✨ הפלטפורמה המובילה בישראל לניהול ועד בית ובניינים',
       title: 'הדרך החכמה, הפשוטה והבטוחה לניהול הבניין שלך',
-      subtitle: 'מערכת HOA מרכזת גביית תשלומים באשראי, מעקב פיננסי בזמן אמת, ניהול תקלות וספקים, הצבעות דיגיטליות ותקשורת עם הדיירים – הכל באפליקציה אחת נוחה.',
+      subtitle: 'מערכת DayarPlus מרכזת גביית תשלומים באשראי, מעקב פיננסי בזמן אמת, ניהול תקלות וספקים, הצבעות דיגיטליות ותקשורת עם הדיירים – הכל באפליקציה אחת נוחה.',
       highlights: [
         '100% שקיפות פיננסית',
         'גבייה אוטומטית בוואטסאפ',
@@ -296,11 +296,11 @@ export const contentData = {
       roleManagement: 'מנהל / נציג חברת ניהול',
       apartmentsLabel: 'מספר דירות בבניין:',
       notesLabel: 'הערות או בקשות מיוחדות:',
-      successMsg: 'תודה! הפרטים התקבלו בהצלחה. נציג HOA יצור עמך קשר בהקדם.'
+      successMsg: 'תודה! הפרטים התקבלו בהצלחה. נציג DayarPlus יצור עמך קשר בהקדם.'
     },
     footer: {
-      tagline: 'מערכת HOA – העתיד של ניהול הבניינים בישראל.',
-      rights: '© 2026 HOA Management Systems Ltd. כל הזכויות שמורות.',
+      tagline: 'מערכת DayarPlus – העתיד של ניהול הבניינים בישראל.',
+      rights: '© 2026 DayarPlus Management Systems Ltd. כל הזכויות שמורות.',
       accessibility: 'הצהרת נגישות',
       privacy: 'מדיניות פרטיות',
       terms: 'תנאי שימוש',
@@ -309,7 +309,7 @@ export const contentData = {
     }
   },
   en: {
-    siteTitle: 'HOA System - Smart Building Management Platform',
+    siteTitle: 'DayarPlus - Smart Building Management Platform',
     nav: [
       { id: 'features', label: 'Features' },
       { id: 'solutions', label: 'Solutions' },
@@ -331,7 +331,7 @@ export const contentData = {
     hero: {
       badge: '✨ Leading HOA & Building Management Platform',
       title: 'The Smart, Simple & Secure Way to Manage Your Building',
-      subtitle: 'HOA System consolidates credit card payments, real-time financial tracking, maintenance ticket dispatch, digital voting, and resident communications into one intuitive app.',
+      subtitle: 'DayarPlus consolidates credit card payments, real-time financial tracking, maintenance ticket dispatch, digital voting, and resident communications into one intuitive app.',
       highlights: [
         '100% Financial Transparency',
         'Automated WhatsApp Reminders',
@@ -603,11 +603,11 @@ export const contentData = {
       roleManagement: 'Property Management Representative',
       apartmentsLabel: 'Apartment Count in Building:',
       notesLabel: 'Special Requirements / Notes:',
-      successMsg: 'Thank you! Your request has been received. An HOA specialist will reach out shortly.'
+      successMsg: 'Thank you! Your request has been received. A DayarPlus specialist will reach out shortly.'
     },
     footer: {
-      tagline: 'HOA System – The Future of Community & Building Management.',
-      rights: '© 2026 HOA Management Systems Ltd. All rights reserved.',
+      tagline: 'DayarPlus – The Future of Community & Building Management.',
+      rights: '© 2026 DayarPlus Management Systems Ltd. All rights reserved.',
       accessibility: 'Accessibility Statement',
       privacy: 'Privacy Policy',
       terms: 'Terms of Use',
