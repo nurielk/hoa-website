@@ -15,7 +15,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   lang,
   onLanguageToggle,
   onOpenDemoModal,
-  onOpenLoginModal,
+  onOpenLoginModal: _onOpenLoginModal,
   navItems,
   buttons,
 }) => {

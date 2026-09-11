@@ -6,14 +6,8 @@ import {
   Wrench,
   Vote,
   LogOut,
-  Bell,
-  CheckCircle2,
   Plus,
-  ArrowLeft,
-  ArrowRight,
   ShieldCheck,
-  FileText,
-  User,
 } from 'lucide-react';
 
 interface AppPortalDashboardProps {
@@ -31,7 +25,7 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
 }) => {
   const isRtl = lang === 'he';
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'dues' | 'tickets' | 'voting' | 'reports'>('overview');
+  const [_activeTab, _setActiveTab] = useState<'overview' | 'dues' | 'tickets' | 'voting' | 'reports'>('overview');
   const [duesPaid, setDuesPaid] = useState(false);
   const [tickets, setTickets] = useState([
     { id: 1, title: isRtl ? 'תאורת חירום תקולה בקומה 3' : 'Emergency lighting issue floor 3', status: isRtl ? 'בטיפול ספק' : 'In Progress', date: '31/07/2026' },
@@ -250,7 +244,7 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
             <div
               style={{
                 display: 'flex',
-                justify: 'space-between',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 marginBottom: '20px',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
