@@ -53,7 +53,7 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
 
   const roleTitle =
     userRole === 'vaad'
-      ? (isRtl ? 'מנהל ועד בית' : 'HOA Board Admin')
+      ? (isRtl ? 'מנהל ועד בית' : 'Building Board Admin')
       : userRole === 'management'
       ? (isRtl ? 'נציג חברת ניהול' : 'Property Manager')
       : (isRtl ? 'דייר מאומת (דירה 14)' : 'Verified Resident (Apt 14)');
@@ -119,7 +119,7 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
                     fontWeight: 700,
                   }}
                 >
-                  {isRtl ? 'מערכת פעילה' : 'Active HOA'}
+                  {isRtl ? 'מערכת פעילה' : 'Active System'}
                 </span>
               </div>
               <span style={{ fontSize: '0.85rem', color: '#9ca3af' }}>{roleTitle}</span>

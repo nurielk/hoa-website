@@ -64,7 +64,7 @@ export const contentData = {
       vaad: {
         id: 'vaad',
         title: 'פשוט, נוח ובלי כאבי ראש לועד הבית',
-        subtitle: 'הפסיקו לרדוף אחרי דיירים עם מזומן ושיקים. HOA מחליפה את ניהול הניירות והמחשבונים במערכת אוטומטית שעובדת בשבילכם.',
+        subtitle: 'הפסיקו לרדוף אחרי דיירים עם מזומן ושיקים. DayarPlus מחליפה את ניהול הניירות והמחשבונים במערכת אוטומטית שעובדת בשבילכם.',
         icon: 'Building2',
         highlights: [
           'תשלום דמי ועד בלחיצת כפתור באשראי, ביט או הוראת קבע',
@@ -130,7 +130,7 @@ export const contentData = {
           id: 'perks',
           iconName: 'Gift',
           title: 'מועדון הטבות וחיסכון לדיירים',
-          description: 'דיירי בנייני HOA נהנים ממועדון הטבות בלעדי: הנחות בביטוח דירה, שירותי ניקיון, חומרי הדברה ואינטרנט.',
+          description: 'דיירי בנייני DayarPlus נהנים ממועדון הטבות בלעדי: הנחות בביטוח דירה, שירותי ניקיון, חומרי הדברה ואינטרנט.',
           badge: 'ערך מוסף לדיירים',
           benefits: ['הנחות בביטוח מבנה', 'ספקים נבחרים במחיר מוזל', 'מבצעים חודשיים משתנים']
         },
@@ -146,7 +146,7 @@ export const contentData = {
     },
     calculator: {
       title: 'מחשבון חיסכון ויעילות לבניין',
-      subtitle: 'בדוק כמה זמן וכסף מערכת HOA יכולה לחסוך לבניין שלך מדי חודש',
+      subtitle: 'בדוק כמה זמן וכסף מערכת DayarPlus יכולה לחסוך לבניין שלך מדי חודש',
       apartmentsLabel: 'מספר דירות בבניין:',
       duesLabel: 'דמי ועד בית חודשיים לדירה (₪):',
       resultsTitle: 'תוצאות החיסכון המשוערות לבניין שלך:',
@@ -214,11 +214,11 @@ export const contentData = {
     },
     testimonials: {
       title: 'מה אומרים עלינו ראשי ועד ומנהלים',
-      subtitle: 'מאות בניינים בישראל כבר עברו לנהל את הבניין עם HOA',
+      subtitle: 'מאות בניינים בישראל כבר עברו לנהל את הבניין עם DayarPlus',
       items: [
         {
           id: '1',
-          quote: 'מאז שעברנו ל-HOA אחוזי הגבייה בבניין עלו מ-70% ל-100%! התזכורות האוטומטיות בוואטסאפ חוסכות לי עשרות שיחות טלפון מביכות בחודש.',
+          quote: 'מאז שעברנו ל-DayarPlus אחוזי הגבייה בבניין עלו מ-70% ל-100%! התזכורות האוטומטיות בוואטסאפ חוסכות לי עשרות שיחות טלפון מביכות בחודש.',
           author: 'אביבי גולן',
           role: 'יו"ר ועד בית (36 דירות)',
           building: 'מגדלי סביון',
@@ -228,7 +228,7 @@ export const contentData = {
         },
         {
           id: '2',
-          quote: 'כחברת ניהול שמנהלת 40 בניינים, HOA שינתה לנו את המשחק. הדשבורד המרכזי מאפשר לנו לנהל את כל הקריאות והגבייה במקום אחד ביעילות מטורפת.',
+          quote: 'כחברת ניהול שמנהלת 40 בניינים, DayarPlus שינתה לנו את המשחק. הדשבורד המרכזי מאפשר לנו לנהל את כל הקריאות והגבייה במקום אחד ביעילות מטורפת.',
           author: 'רונן כץ',
           role: 'מנכ"ל חברת ניהול אורבניקס',
           building: 'ניהול 40 בניינים',
@@ -250,7 +250,7 @@ export const contentData = {
     },
     faq: {
       title: 'שאלות נפוצות',
-      subtitle: 'כל מה שרציתם לדעת על העברת הבניין למערכת HOA',
+      subtitle: 'כל מה שרציתם לדעת על העברת הבניין למערכת DayarPlus',
       items: [
         {
           id: 'faq-1',
@@ -305,7 +305,7 @@ export const contentData = {
       privacy: 'מדיניות פרטיות',
       terms: 'תנאי שימוש',
       contactPhone: '077-1234567',
-      contactEmail: 'support@hoa-system.co.il'
+      contactEmail: 'support@dayarplus.co.il'
     }
   },
   en: {
@@ -329,7 +329,7 @@ export const contentData = {
       submit: 'Submit Request',
     },
     hero: {
-      badge: '✨ Leading HOA & Building Management Platform',
+      badge: '✨ Leading DayarPlus & Building Management Platform',
       title: 'The Smart, Simple & Secure Way to Manage Your Building',
       subtitle: 'DayarPlus consolidates credit card payments, real-time financial tracking, maintenance ticket dispatch, digital voting, and resident communications into one intuitive app.',
       highlights: [
@@ -365,13 +365,13 @@ export const contentData = {
     },
     solutions: {
       title: 'Tailored Solutions for Every Building Type',
-      subtitle: 'Whether you are a self-managed HOA board seeking time savings or a professional management company overseeing 50+ properties.',
-      tabVaad: 'For Self-Managed HOA Boards',
+      subtitle: 'Whether you are a self-managed building board seeking time savings or a professional management company overseeing 50+ properties.',
+      tabVaad: 'For Self-Managed Building Boards',
       tabManagement: 'For Property Management Companies',
       vaad: {
         id: 'vaad',
-        title: 'Hassle-Free Management for HOA Board Members',
-        subtitle: 'Stop chasing residents for cash and cheques. HOA replaces paperwork and spreadsheets with an automated system that handles dues for you.',
+        title: 'Hassle-Free Management for Building Board Members',
+        subtitle: 'Stop chasing residents for cash and cheques. DayarPlus replaces paperwork and spreadsheets with an automated system that handles dues for you.',
         icon: 'Building2',
         highlights: [
           'Instant digital payment via Credit Card, Apple Pay & Direct Debit',
@@ -405,7 +405,7 @@ export const contentData = {
           id: 'payments',
           iconName: 'CreditCard',
           title: 'Digital Dues & Auto Billing',
-          description: 'Accept Credit Cards, Apple Pay, Google Pay and Direct Debit. Funds go straight to the official HOA bank account.',
+          description: 'Accept Credit Cards, Apple Pay, Google Pay and Direct Debit. Funds go straight to the official building bank account.',
           badge: '99.2% Collection Rate',
           benefits: ['Automated WhatsApp reminders', 'Digital tax-compliant receipts', 'PCI-DSS certified security']
         },
@@ -437,7 +437,7 @@ export const contentData = {
           id: 'perks',
           iconName: 'Gift',
           title: 'Resident Perks & Savings Club',
-          description: 'HOA residents enjoy exclusive discounts on home insurance, cleaning services, pest control, and high-speed internet.',
+          description: 'DayarPlus residents enjoy exclusive discounts on home insurance, cleaning services, pest control, and high-speed internet.',
           badge: 'Added Resident Value',
           benefits: ['Discounted property insurance', 'Vetted home service vendors', 'Monthly exclusive deals']
         },
@@ -453,9 +453,9 @@ export const contentData = {
     },
     calculator: {
       title: 'Building Savings & ROI Calculator',
-      subtitle: 'See how much time and money HOA System saves your building every month.',
+      subtitle: 'See how much time and money DayarPlus System saves your building every month.',
       apartmentsLabel: 'Number of apartments in building:',
-      duesLabel: 'Monthly HOA dues per apartment ($):',
+      duesLabel: 'Monthly dues per apartment ($):',
       resultsTitle: 'Estimated Savings & ROI for Your Building:',
       monthlyRevenue: 'Total Monthly Dues Potential:',
       recoveredRevenue: 'Estimated Recovered Dues (+15% boost via digital collections):',
@@ -521,21 +521,21 @@ export const contentData = {
     },
     testimonials: {
       title: 'Trusted by Board Members & Property Managers',
-      subtitle: 'Over 500 communities rely on HOA System to streamline their building operations.',
+      subtitle: 'Over 500 communities rely on DayarPlus to streamline their building operations.',
       items: [
         {
           id: '1',
-          quote: 'Since switching to HOA, our collection rate shot up from 70% to 100%! The automatic WhatsApp reminders save me from awkward phone calls every month.',
-          author: 'David Miller',
-          role: 'HOA Board President (36 units)',
-          building: 'Grand Tower HOA',
+          quote: 'Since switching to DayarPlus, our collection rate shot up from 70% to 100%! The automatic WhatsApp reminders save me from awkward phone calls every month.',
+          author: 'David Ben-David',
+          role: 'Building Board President (36 units)',
+          building: 'Grand Tower Community',
           city: 'Tel Aviv',
           rating: 5,
           avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
         },
         {
           id: '2',
-          quote: 'As a management firm overseeing 40 properties, HOA transformed our business. Managing all vendor dispatches and financials in one centralized hub is incredible.',
+          quote: 'As a management firm overseeing 40 properties, DayarPlus transformed our business. Managing all vendor dispatches and financials in one centralized hub is incredible.',
           author: 'Ron K.',
           role: 'CEO, Urbanix Property Mgmt',
           building: '40 Property Portfolio',
@@ -557,7 +557,7 @@ export const contentData = {
     },
     faq: {
       title: 'Frequently Asked Questions',
-      subtitle: 'Answers to common questions about onboarding your building to HOA System.',
+      subtitle: 'Answers to common questions about onboarding your building to DayarPlus.',
       items: [
         {
           id: 'faq-1',
@@ -567,14 +567,14 @@ export const contentData = {
         },
         {
           id: 'faq-2',
-          question: 'Are credit card payments secure and where does money go?',
-          answer: 'All payments meet PCI-DSS Level 1 security standards. Funds flow directly into your official HOA bank account with no third-party delays.',
+          question: 'How secure is automated credit card collection?',
+          answer: 'All payments meet PCI-DSS Level 1 security standards. Funds flow directly into your official building bank account with no third-party delays.',
           category: 'payments'
         },
         {
           id: 'faq-3',
-          question: 'What if some elderly residents prefer cash or checks?',
-          answer: 'HOA supports manual payment logging. Board members can record cash/checks in one click and issue digital receipts automatically.',
+          question: 'What if some residents prefer paying by cash or bank transfer?',
+          answer: 'DayarPlus supports manual payment logging. Board members can record cash/checks in one click and issue digital receipts automatically.',
           category: 'vaad'
         },
         {
@@ -598,7 +598,7 @@ export const contentData = {
       phoneLabel: 'Phone Number:',
       emailLabel: 'Email Address:',
       roleLabel: 'Your Role:',
-      roleVaad: 'HOA Board Member',
+      roleVaad: 'Building Board Member',
       roleResident: 'Resident',
       roleManagement: 'Property Management Representative',
       apartmentsLabel: 'Apartment Count in Building:',
@@ -612,7 +612,7 @@ export const contentData = {
       privacy: 'Privacy Policy',
       terms: 'Terms of Use',
       contactPhone: '+972-77-1234567',
-      contactEmail: 'support@hoa-system.co.il'
+      contactEmail: 'support@dayarplus.co.il'
     }
   }
 };

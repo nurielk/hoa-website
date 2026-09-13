@@ -162,7 +162,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               transition: 'all 0.2s ease',
             }}
           >
-            {isRtl ? 'ועד בית' : 'HOA Board'}
+            {isRtl ? 'ועד בית' : 'Building Board'}
           </button>
 
           <button

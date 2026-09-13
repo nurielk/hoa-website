@@ -156,7 +156,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
                   lineHeight: 1.5,
                 }}
               >
-                💡 {lang === 'he' ? 'חישוב הרווחים מתבסס על נתוני הגבייה של 550+ בניינים ב-HOA, עם שיפור ממוצע של 15%-25% בגבייה בזמן.' : 'ROI estimates based on live telemetry across 550+ HOA buildings showing a 15-25% improvement in on-time dues.'}
+                💡 {lang === 'he' ? 'חישוב הרווחים מתבסס על נתוני הגבייה של 550+ בניינים ב-DayarPlus, עם שיפור ממוצע של 15%-25% בגבייה בזמן.' : 'ROI estimates based on live telemetry across 550+ DayarPlus buildings showing a 15-25% improvement in on-time dues.'}
               </div>
             </div>
 
