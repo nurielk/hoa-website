@@ -38,6 +38,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
+      setOtpCode('1234');
       setStep('otp');
     }, 600);
   };
@@ -359,6 +360,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 }}
                 placeholder="1234"
               />
+              <div style={{ textAlign: 'center', marginTop: '6px' }}>
+                <span style={{ fontSize: '0.82rem', color: '#60a5fa', fontWeight: 600 }}>
+                  {isRtl ? '💡 מצב דמו: הקוד 1234 מולא אוטומטית (לחץ כניסה למעבר לפורטל)' : '💡 Demo mode: Code 1234 pre-filled (click Enter to proceed)'}
+                </span>
+              </div>
             </div>
 
             <button
