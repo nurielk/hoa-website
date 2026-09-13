@@ -15,7 +15,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   lang,
   onLanguageToggle,
   onOpenDemoModal,
-  onOpenLoginModal: _onOpenLoginModal,
+  onOpenLoginModal,
   navItems,
   buttons,
 }) => {
@@ -38,13 +38,11 @@ export const Navbar: React.FC<NavbarProps> = ({
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        transition: 'all 0.3s ease',
-        background: scrolled
-          ? 'rgba(11, 15, 25, 0.88)'
-          : 'rgba(11, 15, 25, 0.4)',
-        backdropFilter: 'blur(20px)',
+        background: scrolled ? 'rgba(7, 10, 18, 0.85)' : 'transparent',
+        backdropFilter: 'blur(16px)',
         borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid transparent',
-        padding: scrolled ? '12px 0' : '18px 0',
+        transition: 'all 0.3s ease',
+        padding: '16px 0',
       }}
     >
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -54,7 +52,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
+            gap: '12px',
             textDecoration: 'none',
             color: '#ffffff',
           }}
@@ -111,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 fontWeight: 600,
                 transition: 'color 0.2s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#60a5fa')}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#3b82f6')}
               onMouseLeave={(e) => (e.currentTarget.style.color = '#d1d5db')}
             >
               {item.label}
@@ -119,42 +117,33 @@ export const Navbar: React.FC<NavbarProps> = ({
           ))}
         </nav>
 
-        {/* Action Controls */}
+        {/* Action Buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          {/* Language Switcher */}
+          {/* Language Toggle */}
           <button
-            id="lang-toggle-btn"
             onClick={onLanguageToggle}
-            className="glass-pill"
+            className="btn-secondary"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              cursor: 'pointer',
-              color: '#f3f4f6',
+              padding: '8px 14px',
               fontSize: '0.85rem',
-              fontWeight: 600,
             }}
-            title={lang === 'he' ? 'Switch to English' : 'עבור לעברית'}
           >
             <Globe size={16} color="#60a5fa" />
             <span>{lang === 'he' ? 'EN' : 'עברית'}</span>
           </button>
 
-          {/* Login Button (links to HOA App System) */}
-          <a
-            href="http://localhost:5174"
-            target="_blank"
-            rel="noopener noreferrer"
+          {/* Login Button */}
+          <button
+            onClick={onOpenLoginModal}
             className="btn-secondary"
             style={{
               padding: '8px 18px',
               fontSize: '0.9rem',
-              textDecoration: 'none',
+              cursor: 'pointer',
             }}
           >
             {buttons.login}
-          </a>
+          </button>
 
           {/* Schedule Demo CTA */}
           <button

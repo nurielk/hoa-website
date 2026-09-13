@@ -126,7 +126,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
           </div>
 
           <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '6px' }}>
-            {isRtl ? 'התחברות לאפליקציית HOA' : 'Login to HOA App'}
+            {isRtl ? 'התחברות לאפליקציית DayarPlus' : 'Login to DayarPlus App'}
           </h3>
           <p style={{ fontSize: '0.9rem', color: '#9ca3af' }}>
             {isRtl
@@ -367,7 +367,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               className="btn-primary"
               style={{ width: '100%', justifyContent: 'center', marginTop: '10px' }}
             >
-              <span>{loading ? (isRtl ? 'מתחבר למערכת...' : 'Logging in...') : (isRtl ? 'כניסה למערכת HOA' : 'Enter HOA App Portal')}</span>
+              <span>{loading ? (isRtl ? 'מתחבר למערכת...' : 'Logging in...') : (isRtl ? 'כניסה למערכת DayarPlus' : 'Enter DayarPlus App Portal')}</span>
               <Building2 size={18} />
             </button>
 

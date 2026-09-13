@@ -168,8 +168,8 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
               </div>
               <div style={{ fontSize: '0.85rem', color: '#9ca3af' }}>
                 {isRtl
-                  ? 'אתה מחובר כעת ישירות למערכת HOA. כל הנתונים, הגבייה והתקלות מסונכרנים בזמן אמת.'
-                  : 'You are directly connected into the live HOA system. All dues, issues, and voting are synced.'}
+                  ? 'אתה מחובר כעת ישירות למערכת DayarPlus. כל הנתונים, הגבייה והתקלות מסונכרנים בזמן אמת.'
+                  : 'You are directly connected into the live DayarPlus system. All dues, issues, and voting are synced.'}
               </div>
             </div>
           </div>

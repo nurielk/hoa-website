@@ -12,11 +12,18 @@ import { PricingSection } from './components/PricingSection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { FaqSection } from './components/FaqSection';
 import { ContactModal } from './components/ContactModal';
+import { LoginModal } from './components/LoginModal';
+import { AppPortalDashboard } from './components/AppPortalDashboard';
 import { Footer } from './components/Footer';
 
 export const App: React.FC = () => {
   const [lang, setLang] = useState<Language>('he');
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [userSession, setUserSession] = useState<{
+    userRole: 'resident' | 'vaad' | 'management';
+    buildingName: string;
+  } | null>(null);
 
   const currentContent = contentData[lang];
   const isRtl = lang === 'he';
@@ -31,6 +38,19 @@ export const App: React.FC = () => {
     setLang((prev) => (prev === 'he' ? 'en' : 'he'));
   };
 
+  if (userSession) {
+    return (
+      <div dir={isRtl ? 'rtl' : 'ltr'}>
+        <AppPortalDashboard
+          lang={lang}
+          userRole={userSession.userRole}
+          buildingName={userSession.buildingName}
+          onLogout={() => setUserSession(null)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }} dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Navigation Header */}
@@ -38,9 +58,7 @@ export const App: React.FC = () => {
         lang={lang}
         onLanguageToggle={toggleLanguage}
         onOpenDemoModal={() => setIsDemoModalOpen(true)}
-        onOpenLoginModal={() => {
-          window.open('http://localhost:5174', '_blank');
-        }}
+        onOpenLoginModal={() => setIsLoginModalOpen(true)}
         navItems={currentContent.nav}
         buttons={currentContent.buttons}
       />
@@ -103,6 +121,17 @@ export const App: React.FC = () => {
         lang={lang}
         modalData={currentContent.modal}
         buttons={currentContent.buttons}
+      />
+
+      {/* 11. Secure Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        lang={lang}
+        onLoginSuccess={(role, buildingName) => {
+          setUserSession({ userRole: role, buildingName });
+          setIsLoginModalOpen(false);
+        }}
       />
     </div>
   );
