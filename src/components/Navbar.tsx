@@ -15,7 +15,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   lang,
   onLanguageToggle,
   onOpenDemoModal,
-  onOpenLoginModal,
+  onOpenLoginModal: _onOpenLoginModal,
   navItems,
   buttons,
 }) => {
@@ -133,17 +133,19 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* Login Button */}
-          <button
-            onClick={onOpenLoginModal}
+          <a
+            href="https://dayarplus.knuriel.workers.dev/fees"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-secondary"
             style={{
               padding: '8px 18px',
               fontSize: '0.9rem',
-              cursor: 'pointer',
+              textDecoration: 'none',
             }}
           >
             {buttons.login}
-          </button>
+          </a>
 
           {/* Schedule Demo CTA */}
           <button
