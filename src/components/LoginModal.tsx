@@ -50,7 +50,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
       setLoading(false);
       onLoginSuccess(role, isRtl ? 'בניין רוטשילד 45, תל אביב' : 'Rothschild 45 Tower, Tel Aviv');
       onClose();
-      window.location.href = 'https://dayarplus.knuriel.workers.dev/fees';
     }, 800);
   };
 
