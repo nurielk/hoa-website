@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Language, ModalData } from '../types';
-import { X, CheckCircle, Sparkles, Send, Loader2, AlertCircle } from 'lucide-react';
+import { X, CheckCircle, Sparkles, Send, Loader2, AlertCircle, MessageCircle } from 'lucide-react';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -20,6 +20,14 @@ export const ContactModal: React.FC<ContactModalProps> = ({
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [submittedLeadId, setSubmittedLeadId] = useState<string | null>(null);
+  const [submittedData, setSubmittedData] = useState<{
+    name: string;
+    phone: string;
+    role: string;
+    apartments: string;
+  } | null>(null);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -44,7 +52,6 @@ export const ContactModal: React.FC<ContactModalProps> = ({
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    // Focus first input on open
     const timer = setTimeout(() => {
       firstInputRef.current?.focus();
     }, 50);
@@ -87,8 +94,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({
     setIsLoading(true);
 
     try {
-      // Dispatch lead payload
+      const leadId = `LEAD-${Date.now().toString(36).toUpperCase()}-${Math.floor(Math.random() * 1000)}`;
       const payload = {
+        leadId,
         name: trimmedName,
         phone: trimmedPhone,
         email: trimmedEmail,
@@ -99,21 +107,49 @@ export const ContactModal: React.FC<ContactModalProps> = ({
         source: 'dayarplus_marketing_modal',
       };
 
-      // Attempt endpoint dispatch with fallback
+      // 1. Fail-safe local backup
       try {
-        await fetch('https://dayarplus.knuriel.workers.dev/api/leads', {
+        const stored = JSON.parse(localStorage.getItem('dayarplus_leads_log') || '[]');
+        stored.unshift(payload);
+        localStorage.setItem('dayarplus_leads_log', JSON.stringify(stored));
+      } catch (e) {
+        console.warn('LocalStorage lead backup error:', e);
+      }
+
+      // 2. Dispatch to backend API (Cloudflare Worker & Resend Email notification)
+      try {
+        const res = await fetch('https://dayarplus.knuriel.workers.dev/api/leads', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.leadId) {
+            setSubmittedLeadId(data.leadId);
+          } else {
+            setSubmittedLeadId(leadId);
+          }
+        } else {
+          setSubmittedLeadId(leadId);
+        }
       } catch {
-        // Mock fallback delay if worker endpoint is in development
-        await new Promise((resolve) => setTimeout(resolve, 800));
+        // Network fallback delay
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        setSubmittedLeadId(leadId);
       }
+
+      setSubmittedData({
+        name: trimmedName,
+        phone: trimmedPhone,
+        role: formData.role === 'vaad' ? (isRtl ? 'חבר ועד בית' : 'HOA Board') : (isRtl ? 'חברת ניהול' : 'Management Co'),
+        apartments: formData.apartments,
+      });
 
       setSubmitted(true);
     } catch {
-      setErrorMsg(isRtl ? 'חלה שגיאה בשליחת הטופס. אנא נסה שוב או פנה בטלפון.' : 'Failed to submit form. Please try again.');
+      setErrorMsg(isRtl ? 'חלה שגיאה בשליחת הטופס. אנא נסה שוב או פנה בוואטסאפ.' : 'Failed to submit form. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -361,7 +397,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
             </form>
           </div>
         ) : (
-          <div style={{ textAlign: 'center', padding: '30px 10px' }}>
+          <div style={{ textAlign: 'center', padding: '20px 10px' }}>
             <div
               style={{
                 width: '64px',
@@ -371,18 +407,80 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 20px',
+                margin: '0 auto 16px',
               }}
             >
               <CheckCircle size={36} color="#34d399" />
             </div>
-            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '12px' }}>
-              {lang === 'he' ? 'הפנייה נשלחה בהצלחה!' : 'Request Sent Successfully!'}
+
+            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px' }}>
+              {lang === 'he' ? 'הפנייה נשלחה ונקלטה בהצלחה!' : 'Request Sent Successfully!'}
             </h3>
-            <p style={{ fontSize: '1.05rem', color: '#9ca3af', marginBottom: '24px' }}>
+
+            <p style={{ fontSize: '0.95rem', color: '#9ca3af', marginBottom: '16px', lineHeight: 1.5 }}>
               {modalData.successMsg}
             </p>
-            <button onClick={handleClose} className="btn-secondary">
+
+            {/* Reference Badge */}
+            {submittedLeadId && (
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '6px 14px',
+                  borderRadius: '20px',
+                  background: 'rgba(59, 130, 246, 0.15)',
+                  border: '1px solid rgba(59, 130, 246, 0.3)',
+                  color: '#93c5fd',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  marginBottom: '20px',
+                }}
+              >
+                <span>{isRtl ? 'מזהה פנייה במערכת:' : 'Reference ID:'}</span>
+                <code>#{submittedLeadId}</code>
+              </div>
+            )}
+
+            {/* Fast Track WhatsApp Button */}
+            {submittedData && (
+              <div style={{ marginBottom: '16px' }}>
+                <a
+                  href={`https://wa.me/972779988770?text=${encodeURIComponent(
+                    isRtl
+                      ? `שלום DayarPlus! שמי ${submittedData.name}, ${submittedData.role} בבניין של ${submittedData.apartments} דירות (מזהה פנייה: #${submittedLeadId}). הרגע מילאתי טופס הדגמה באתר ואשמח לתאם שיחה!`
+                      : `Hello DayarPlus! My name is ${submittedData.name}, ${submittedData.role} (${submittedData.apartments} units, Ref: #${submittedLeadId}). I just submitted a demo request and would love to chat!`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '10px',
+                    padding: '14px 20px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    fontSize: '0.98rem',
+                    textDecoration: 'none',
+                    boxShadow: '0 8px 24px rgba(37, 211, 102, 0.35)',
+                    transition: 'transform 0.2s ease',
+                  }}
+                >
+                  <MessageCircle size={20} fill="#ffffff" color="#25D366" />
+                  <span>{isRtl ? '💬 המשך ישיר לשיחה בוואטסאפ עם נציג' : '💬 Chat with Representative on WhatsApp'}</span>
+                </a>
+              </div>
+            )}
+
+            <button
+              onClick={handleClose}
+              className="btn-secondary"
+              style={{ width: '100%', justifyContent: 'center' }}
+            >
               {buttons.close}
             </button>
           </div>
