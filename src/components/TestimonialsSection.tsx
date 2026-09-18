@@ -71,7 +71,10 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testim
               >
                 <img
                   src={item.avatarUrl}
-                  alt={item.author}
+                  alt={`תמונת ${item.author} - ${item.role}`}
+                  loading="lazy"
+                  width="48"
+                  height="48"
                   style={{
                     width: '48px',
                     height: '48px',

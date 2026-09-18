@@ -32,6 +32,21 @@ export const App: React.FC = () => {
     document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
     document.title = currentContent.siteTitle;
+
+    const metaDescription = document.querySelector('meta[name="description"]');
+    const descriptionText =
+      lang === 'he'
+        ? 'DayarPlus – האפליקציה המתקדמת לניהול הבניין, ניהול גבייה ותשלומים באשראי, מעקב פיננסי, תקלות, ספקים ותקשורת עם הדיירים – הכל במקום אחד.'
+        : 'DayarPlus – The smart, simple & secure cloud platform for building management, HOA dues collection, financial accounting, maintenance dispatch, and tenant communication.';
+
+    if (metaDescription) {
+      metaDescription.setAttribute('content', descriptionText);
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = descriptionText;
+      document.head.appendChild(meta);
+    }
   }, [lang, currentContent.siteTitle, isRtl]);
 
   const toggleLanguage = () => {

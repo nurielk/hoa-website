@@ -1,0 +1,30 @@
+# DayarPlus (דייר פלוס) - Building Management Platform
+
+> DayarPlus is a cloud-based SaaS platform and mobile application engineered for condominium communities, Homeowners Associations (ועדי בית), and residential property management companies (חברות ניהול מבנים) in Israel.
+
+## Overview & Core Purpose
+DayarPlus modernizes and automates residential building operations by digitizing fee collection, financial accounting, building maintenance, digital voting, and tenant communication into a unified interface.
+
+## Target Audiences
+1. **ועדי בית (HOA / Vaad Bayit)**: Volunteer or elected building committees seeking to eliminate friction in collecting monthly dues, automate WhatsApp debt reminders, track vendor maintenance calls, and provide full financial transparency to residents.
+2. **חברות ניהול ואחזקה (Property Management Companies)**: Multi-building enterprise dashboard allowing portfolio managers to oversee dozens of residential and commercial towers, synchronize with accounting software, dispatch service contractors, and manage resident accounts under custom branding.
+3. **דיירים ובעלי דירות (Residents & Owners)**: Dedicated web portal and mobile app to pay dues via credit card, Apple Pay, Google Pay, or direct debit, report maintenance issues with photos, participate in binding digital polls, and book shared amenities.
+
+## Key Features & Capabilities
+- **Digital Dues Collection**: PCI-DSS Level 1 compliant online payments, recurring direct debit, digital tax invoices & receipts, automated WhatsApp payment links and reminders (achieving 99.2% on-time collection).
+- **Financial Accounting & Transparency**: Live income/expense ledgers, budget tracking, bank balance sync, and one-click export of P&L reports for accountants.
+- **Maintenance & Vendor Ticketing**: Photo/video issue reporting by residents, ticket assignment to certified contractors, quote approval, and status tracking until resolution.
+- **Digital Voting & Surveys**: Legally binding online surveys and elections for building decisions without organizing in-person assemblies.
+- **Amenities Booking**: Scheduling calendar for common facilities (gym, tenant lounge, rooftop, EV charging stations).
+- **Tenant Perks Club**: Exclusive building discounts for home insurance, cleaning services, pest control, and high-speed internet.
+
+## Pricing Tiers
+- **Starter (ועד עצמאי)**: Up to 15 apartments – 199 ₪/month.
+- **Pro (בניין מודרני - Most Popular)**: 16 to 45 apartments – 349 ₪/month (includes unlimited WhatsApp reminders and priority support).
+- **Enterprise (חברות ניהול ומגדלים)**: 45+ apartments or multi-building portfolios – 590 ₪/month (includes custom branding, API access, and dedicated account manager).
+
+## Canonical URLs & Contact
+- Website: https://dayarplus.co.il
+- Portal Login: https://dayarplus.knuriel.workers.dev/fees
+- Email: support@dayarplus.co.il
+- Phone: 077-9988770

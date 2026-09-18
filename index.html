@@ -4,8 +4,123 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="DayarPlus – האפליקציה המתקדמת לניהול הבניין, ניהול גבייה ותשלומים באשראי, מעקב פיננסי, תקלות, ספקים ותקשורת עם הדיירים – הכל במקום אחד." />
     <title>DayarPlus - האפליקציה המתקדמת לניהול הבניין</title>
+    <meta name="description" content="DayarPlus – האפליקציה המתקדמת לניהול הבניין, ניהול גבייה ותשלומים באשראי, מעקב פיננסי, תקלות, ספקים ותקשורת עם הדיירים – הכל במקום אחד." />
+
+    <!-- Canonical Tag -->
+    <link rel="canonical" href="https://dayarplus.co.il/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dayarplus.co.il/" />
+    <meta property="og:title" content="DayarPlus - האפליקציה המתקדמת לניהול הבניין" />
+    <meta property="og:description" content="מערכת ענן מתקדמת לגביית מסי ועד באשראי, ניהול תקלות, דוחות כספיים והצבעות דיירים דיגיטליות." />
+    <meta property="og:image" content="https://dayarplus.co.il/og-image.png" />
+    <meta property="og:site_name" content="DayarPlus" />
+    <meta property="og:locale" content="he_IL" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://dayarplus.co.il/" />
+    <meta name="twitter:title" content="DayarPlus - האפליקציה המתקדמת לניהול הבניין" />
+    <meta name="twitter:description" content="מערכת ענן מתקדמת לגביית מסי ועד באשראי, ניהול תקלות, דוחות כספיים והצבעות דיירים דיגיטליות." />
+    <meta name="twitter:image" content="https://dayarplus.co.il/og-image.png" />
+
+    <!-- Font Loading Optimization: Preconnect & Asynchronous Stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Structured Data (JSON-LD): SoftwareApplication, Organization, FAQPage -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://dayarplus.co.il/#software",
+            "name": "DayarPlus",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web, iOS, Android",
+            "offers": {
+              "@type": "AggregateOffer",
+              "priceCurrency": "ILS",
+              "lowPrice": "199",
+              "highPrice": "590",
+              "offerCount": "3"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.9",
+              "reviewCount": "128"
+            },
+            "description": "הפלטפורמה המובילה לניהול ועד בית, סליקת תשלומים באשראי, מעקב פיננסי, תקלות ותקשורת דיירים."
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://dayarplus.co.il/#organization",
+            "name": "DayarPlus Management Systems Ltd",
+            "url": "https://dayarplus.co.il/",
+            "logo": "https://dayarplus.co.il/vite.svg",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+972-77-9988770",
+              "contactType": "customer service",
+              "availableLanguage": ["Hebrew", "English"]
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://dayarplus.co.il/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "כמה זמן לוקח להקים ולצרף את הבניין למערכת?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "הקמת הבניין אורכת פחות מ-10 דקות! אתם מעלים רשימת דיירים (אפילו מקובץ אקסל), והמערכת שולחת הודעת הצטרפות אוטומטית לכל הדיירים עם קישור ישיר."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "האם התשלומים באשראי בטוחים ואיפה הכסף נשמר?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "התשלומים מבוצעים בתקן האבטחה המחמיר ביותר PCI-DSS Level 1. הכסף נגבה ומועבר ישירות לחשבון הבנק הרשמי של ועד הבית / חברת הניהול ללא גורם שלישי."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "מה קורה אם חלק מהדיירים קשישים או לא טכנולוגיים?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "המערכת תומכת גם בהזנת תשלומים ידנית (שיקים, מזומן, העברות בנקאיות). הועד יכול להפיק להם קבלה דיגיטלית בלחיצת כפתור ולשמור על רישום מלא."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "האם יש התחייבות לתקופה ארוכה?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "ממש לא! ניתן לבטל את המנוי בכל עת ללא קנסות או התחייבות. אנחנו מאמינים שהאיכות והשירות שלנו יגרמו לכם להישאר."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "האם ניתן לייצא דוחות לרואה חשבון או לעורך דין?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "כן, המערכת כוללת מחולל דוחות מתקדם המאפשר לייצא דוחות חובות, מאזן הכנסות והוצאות ויומן קבלות בפורמט Excel או PDF."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

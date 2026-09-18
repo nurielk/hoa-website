@@ -174,9 +174,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Building size={20} color="#3b82f6" />
                   <div>
-                    <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff' }}>
+                    <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff' }}>
                       {mockupData.title}
-                    </h3>
+                    </div>
                     <span style={{ fontSize: '0.8rem', color: '#9ca3af' }}>{mockupData.month}</span>
                   </div>
                 </div>

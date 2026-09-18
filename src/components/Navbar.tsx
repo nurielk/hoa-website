@@ -48,7 +48,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {/* Brand Logo */}
         <a
-          href="#"
+          href="/"
           style={{
             display: 'flex',
             alignItems: 'center',
