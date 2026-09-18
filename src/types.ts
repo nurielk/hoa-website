@@ -51,3 +51,62 @@ export interface FaqItem {
   answer: string;
   category: 'general' | 'payments' | 'vaad' | 'management';
 }
+
+export interface ModalData {
+  title: string;
+  subtitle: string;
+  nameLabel: string;
+  phoneLabel: string;
+  emailLabel: string;
+  roleLabel: string;
+  roleVaad: string;
+  roleResident: string;
+  roleManagement: string;
+  apartmentsLabel: string;
+  notesLabel?: string;
+  successMsg: string;
+}
+
+export interface FooterData {
+  tagline: string;
+  rights: string;
+  accessibility: string;
+  privacy: string;
+  terms: string;
+  contactPhone: string;
+  contactEmail: string;
+}
+
+export interface CalculatorData {
+  title: string;
+  subtitle: string;
+  apartmentsLabel: string;
+  duesLabel: string;
+  resultsTitle: string;
+  monthlyRevenue: string;
+  recoveredRevenue: string;
+  hoursSaved: string;
+  yearlySavings: string;
+}
+
+export interface MockupTransaction {
+  name: string;
+  amount: string;
+  status: string;
+  time: string;
+}
+
+export interface AppMockupData {
+  title: string;
+  month: string;
+  duesCollected: string;
+  targetDues: string;
+  collectionPercentage: string;
+  activeTickets: number;
+  pendingVotes: number;
+  recentTransactions: MockupTransaction[];
+  activeTicketTitle: string;
+  activeTicketStatus: string;
+  activeVoteTitle: string;
+  activeVoteStatus: string;
+}

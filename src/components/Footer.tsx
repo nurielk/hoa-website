@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Language } from '../types';
+import React, { useState, useEffect } from 'react';
+import { Language, FooterData } from '../types';
 import { Building2, Phone, Mail, ShieldCheck, X } from 'lucide-react';
 
 interface FooterProps {
   lang: Language;
-  footerData: any;
+  footerData: FooterData;
   buttons: Record<string, string>;
   onOpenDemoModal: () => void;
 }
@@ -17,6 +17,19 @@ export const Footer: React.FC<FooterProps> = ({
 }) => {
   const [activeLegalModal, setActiveLegalModal] = useState<'accessibility' | 'privacy' | 'terms' | null>(null);
   const isRtl = lang === 'he';
+
+  useEffect(() => {
+    if (!activeLegalModal) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveLegalModal(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeLegalModal]);
 
   const getLegalContent = () => {
     switch (activeLegalModal) {
@@ -303,6 +316,8 @@ export const Footer: React.FC<FooterProps> = ({
             padding: '20px',
           }}
           onClick={() => setActiveLegalModal(null)}
+          role="dialog"
+          aria-modal="true"
         >
           <div
             className="glass-panel"

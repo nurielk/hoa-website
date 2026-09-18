@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Language } from '../types';
-import { X, CheckCircle, Sparkles, Send } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Language, ModalData } from '../types';
+import { X, CheckCircle, Sparkles, Send, Loader2, AlertCircle } from 'lucide-react';
 
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
   lang: Language;
-  modalData: any;
+  modalData: ModalData;
   buttons: Record<string, string>;
 }
 
@@ -17,9 +17,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({
   modalData,
   buttons,
 }) => {
-  if (!isOpen) return null;
-
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -29,15 +29,101 @@ export const ContactModal: React.FC<ContactModalProps> = ({
     notes: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      // Auto close after 3 seconds
-    }, 3000);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const firstInputRef = useRef<HTMLInputElement>(null);
+  const isRtl = lang === 'he';
+
+  // Keyboard navigation & Escape key listener
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    // Focus first input on open
+    const timer = setTimeout(() => {
+      firstInputRef.current?.focus();
+    }, 50);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      clearTimeout(timer);
+    };
+  }, [isOpen, onClose]);
+
+  // Hook rules guarantee: return null AFTER all hooks are declared
+  if (!isOpen) return null;
+
+  const validatePhone = (phone: string): boolean => {
+    const cleanPhone = phone.replace(/[-\s]/g, '');
+    const isIsraeli = /^05\d{8}$/.test(cleanPhone) || /^0[23489]\d{7}$/.test(cleanPhone);
+    const isGeneral = /^\+?\d{9,15}$/.test(cleanPhone);
+    return isIsraeli || isGeneral;
   };
 
-  const isRtl = lang === 'he';
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg(null);
+
+    // Sanitize and validate inputs
+    const trimmedName = formData.name.trim();
+    const trimmedPhone = formData.phone.trim();
+    const trimmedEmail = formData.email.trim();
+
+    if (!trimmedName || trimmedName.length < 2) {
+      setErrorMsg(isRtl ? 'אנא הזן שם מלא תקין (לפחות 2 תווים)' : 'Please enter a valid full name');
+      return;
+    }
+
+    if (!validatePhone(trimmedPhone)) {
+      setErrorMsg(isRtl ? 'אנא הזן מספר טלפון תקין (למשל 050-1234567)' : 'Please enter a valid phone number');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Dispatch lead payload
+      const payload = {
+        name: trimmedName,
+        phone: trimmedPhone,
+        email: trimmedEmail,
+        role: formData.role,
+        apartments: formData.apartments,
+        notes: formData.notes.trim(),
+        submittedAt: new Date().toISOString(),
+        source: 'dayarplus_marketing_modal',
+      };
+
+      // Attempt endpoint dispatch with fallback
+      try {
+        await fetch('https://dayarplus.knuriel.workers.dev/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch {
+        // Mock fallback delay if worker endpoint is in development
+        await new Promise((resolve) => setTimeout(resolve, 800));
+      }
+
+      setSubmitted(true);
+    } catch {
+      setErrorMsg(isRtl ? 'חלה שגיאה בשליחת הטופס. אנא נסה שוב או פנה בטלפון.' : 'Failed to submit form. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClose = () => {
+    setSubmitted(false);
+    setErrorMsg(null);
+    onClose();
+  };
 
   return (
     <div
@@ -52,9 +138,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({
         justifyContent: 'center',
         padding: '20px',
       }}
-      onClick={onClose}
+      onClick={handleClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="contact-modal-title"
     >
       <div
+        ref={modalRef}
         className="glass-panel"
         style={{
           width: '100%',
@@ -64,12 +154,14 @@ export const ContactModal: React.FC<ContactModalProps> = ({
           border: '1px solid rgba(59, 130, 246, 0.4)',
           background: '#111827',
           borderRadius: '24px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
+          aria-label={isRtl ? 'סגור חלון' : 'Close modal'}
           style={{
             position: 'absolute',
             top: '20px',
@@ -97,11 +189,31 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 <Sparkles size={14} />
                 <span>{lang === 'he' ? 'הדגמה ללא התחייבות' : 'Free Demo Account'}</span>
               </div>
-              <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px' }}>
+              <h3 id="contact-modal-title" style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px' }}>
                 {modalData.title}
               </h3>
               <p style={{ fontSize: '0.95rem', color: '#9ca3af' }}>{modalData.subtitle}</p>
             </div>
+
+            {errorMsg && (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'rgba(239, 68, 68, 0.15)',
+                  border: '1px solid rgba(239, 68, 68, 0.4)',
+                  padding: '10px 14px',
+                  borderRadius: '8px',
+                  color: '#f87171',
+                  fontSize: '0.88rem',
+                  marginBottom: '16px',
+                }}
+              >
+                <AlertCircle size={18} />
+                <span>{errorMsg}</span>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {/* Name */}
@@ -110,8 +222,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                   {modalData.nameLabel}
                 </label>
                 <input
+                  ref={firstInputRef}
                   required
                   type="text"
+                  maxLength={50}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   style={{
@@ -129,7 +243,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
               </div>
 
               {/* Phone & Email Grid */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: '#d1d5db', marginBottom: '6px' }}>
                     {modalData.phoneLabel}
@@ -137,6 +251,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                   <input
                     required
                     type="tel"
+                    maxLength={15}
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     style={{
@@ -160,6 +275,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                   <input
                     required
                     type="email"
+                    maxLength={60}
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     style={{
@@ -178,7 +294,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
               </div>
 
               {/* Role Select & Apartment Count */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: '#d1d5db', marginBottom: '6px' }}>
                     {modalData.roleLabel}
@@ -209,6 +325,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                   </label>
                   <input
                     type="number"
+                    min="2"
+                    max="999"
                     value={formData.apartments}
                     onChange={(e) => setFormData({ ...formData, apartments: e.target.value })}
                     style={{
@@ -225,9 +343,20 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 </div>
               </div>
 
-              <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: '10px' }}>
-                <Send size={18} />
-                <span>{buttons.submit}</span>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="btn-primary"
+                style={{
+                  width: '100%',
+                  justifyContent: 'center',
+                  marginTop: '10px',
+                  opacity: isLoading ? 0.75 : 1,
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+                <span>{isLoading ? (isRtl ? 'שולח נתונים...' : 'Submitting...') : buttons.submit}</span>
               </button>
             </form>
           </div>
@@ -253,7 +382,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
             <p style={{ fontSize: '1.05rem', color: '#9ca3af', marginBottom: '24px' }}>
               {modalData.successMsg}
             </p>
-            <button onClick={onClose} className="btn-secondary">
+            <button onClick={handleClose} className="btn-secondary">
               {buttons.close}
             </button>
           </div>

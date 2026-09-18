@@ -15,8 +15,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   lang,
   onLoginSuccess,
 }) => {
-  if (!isOpen) return null;
-
   const isRtl = lang === 'he';
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
@@ -27,6 +25,23 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   const [otpCode, setOtpCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Keyboard Escape listener
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Hook rules guarantee: return null AFTER all hooks
+  if (!isOpen) return null;
 
   const handleCredentialsSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,6 +82,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         padding: '20px',
       }}
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="login-modal-title"
     >
       <div
         className="glass-panel"

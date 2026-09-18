@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Language } from './types';
 import { contentData } from './data/contentData';
 
@@ -11,15 +11,28 @@ import { SavingsCalculator } from './components/SavingsCalculator';
 import { PricingSection } from './components/PricingSection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { FaqSection } from './components/FaqSection';
-import { ContactModal } from './components/ContactModal';
-import { LoginModal } from './components/LoginModal';
-import { AppPortalDashboard } from './components/AppPortalDashboard';
 import { Footer } from './components/Footer';
+import { WhatsAppWidget } from './components/WhatsAppWidget';
+
+// Code-Splitting: Lazy load heavy interactive modals, dashboard, and 404
+const ContactModal = React.lazy(() =>
+  import('./components/ContactModal').then((m) => ({ default: m.ContactModal }))
+);
+const LoginModal = React.lazy(() =>
+  import('./components/LoginModal').then((m) => ({ default: m.LoginModal }))
+);
+const AppPortalDashboard = React.lazy(() =>
+  import('./components/AppPortalDashboard').then((m) => ({ default: m.AppPortalDashboard }))
+);
+const NotFoundPage = React.lazy(() =>
+  import('./components/NotFoundPage').then((m) => ({ default: m.NotFoundPage }))
+);
 
 export const App: React.FC = () => {
   const [lang, setLang] = useState<Language>('he');
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [is404, setIs404] = useState<boolean>(false);
   const [userSession, setUserSession] = useState<{
     userRole: 'resident' | 'vaad' | 'management';
     buildingName: string;
@@ -27,6 +40,14 @@ export const App: React.FC = () => {
 
   const currentContent = contentData[lang];
   const isRtl = lang === 'he';
+
+  // Check URL pathname for 404 detection
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path !== '/' && path !== '' && path !== '/index.html') {
+      setIs404(true);
+    }
+  }, []);
 
   useEffect(() => {
     document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
@@ -53,15 +74,32 @@ export const App: React.FC = () => {
     setLang((prev) => (prev === 'he' ? 'en' : 'he'));
   };
 
+  const handleGoHome = () => {
+    window.history.pushState(null, '', '/');
+    setIs404(false);
+  };
+
+  // If 404 path is accessed
+  if (is404) {
+    return (
+      <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0b0f19' }} />}>
+        <NotFoundPage lang={lang} onGoHome={handleGoHome} />
+      </Suspense>
+    );
+  }
+
+  // If logged in to Portal Dashboard
   if (userSession) {
     return (
       <div dir={isRtl ? 'rtl' : 'ltr'}>
-        <AppPortalDashboard
-          lang={lang}
-          userRole={userSession.userRole}
-          buildingName={userSession.buildingName}
-          onLogout={() => setUserSession(null)}
-        />
+        <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0b0f19' }} />}>
+          <AppPortalDashboard
+            lang={lang}
+            userRole={userSession.userRole}
+            buildingName={userSession.buildingName}
+            onLogout={() => setUserSession(null)}
+          />
+        </Suspense>
       </div>
     );
   }
@@ -117,7 +155,7 @@ export const App: React.FC = () => {
         {/* 7. Customer Reviews & Social Proof */}
         <TestimonialsSection testimonialsData={currentContent.testimonials} />
 
-        {/* 8. Frequently Asked Questions (FAQ Accordion) */}
+        {/* 8. Frequently Asked Questions (FAQ Accordion with Dynamic Search) */}
         <FaqSection faqData={currentContent.faq} />
       </main>
 
@@ -129,25 +167,36 @@ export const App: React.FC = () => {
         onOpenDemoModal={() => setIsDemoModalOpen(true)}
       />
 
-      {/* 10. Lead Capture Demo Modal */}
-      <ContactModal
-        isOpen={isDemoModalOpen}
-        onClose={() => setIsDemoModalOpen(false)}
-        lang={lang}
-        modalData={currentContent.modal}
-        buttons={currentContent.buttons}
-      />
+      {/* 10. WhatsApp Quick Chat Floating Widget */}
+      <WhatsAppWidget lang={lang} />
 
-      {/* 11. Secure Login Modal */}
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-        lang={lang}
-        onLoginSuccess={(role, buildingName) => {
-          setUserSession({ userRole: role, buildingName });
-          setIsLoginModalOpen(false);
-        }}
-      />
+      {/* 11. Lazy Loaded Lead Capture Demo Modal */}
+      {isDemoModalOpen && (
+        <Suspense fallback={null}>
+          <ContactModal
+            isOpen={isDemoModalOpen}
+            onClose={() => setIsDemoModalOpen(false)}
+            lang={lang}
+            modalData={currentContent.modal}
+            buttons={currentContent.buttons}
+          />
+        </Suspense>
+      )}
+
+      {/* 12. Lazy Loaded Secure Login Modal */}
+      {isLoginModalOpen && (
+        <Suspense fallback={null}>
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+            lang={lang}
+            onLoginSuccess={(role, buildingName) => {
+              setUserSession({ userRole: role, buildingName });
+              setIsLoginModalOpen(false);
+            }}
+          />
+        </Suspense>
+      )}
     </div>
   );
 };

@@ -15,7 +15,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   lang,
   onLanguageToggle,
   onOpenDemoModal,
-  onOpenLoginModal: _onOpenLoginModal,
+  onOpenLoginModal,
   navItems,
   buttons,
 }) => {
@@ -133,19 +133,17 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* Login Button */}
-          <a
-            href="https://dayarplus.knuriel.workers.dev/fees"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={onOpenLoginModal}
             className="btn-secondary"
             style={{
               padding: '8px 18px',
               fontSize: '0.9rem',
-              textDecoration: 'none',
+              cursor: 'pointer',
             }}
           >
             {buttons.login}
-          </a>
+          </button>
 
           {/* Schedule Demo CTA */}
           <button
@@ -164,6 +162,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={lang === 'he' ? 'תפריט ניווט' : 'Navigation menu'}
+            aria-expanded={mobileMenuOpen}
             style={{
               display: 'flex',
               background: 'transparent',

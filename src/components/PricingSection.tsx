@@ -53,6 +53,10 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           </span>
 
           <button
+            type="button"
+            role="switch"
+            aria-checked={isYearly}
+            aria-label={lang === 'he' ? 'החלף למסלול שנתי מוזל' : 'Toggle yearly billing discount'}
             onClick={() => setIsYearly(!isYearly)}
             style={{
               width: '60px',

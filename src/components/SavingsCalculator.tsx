@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Language } from '../types';
+import { Language, CalculatorData } from '../types';
 import { Calculator, ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface SavingsCalculatorProps {
   lang: Language;
-  calcData: any;
+  calcData: CalculatorData;
   onOpenDemoModal: () => void;
 }
 
@@ -28,11 +28,11 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
   return (
     <section id="calculator" style={{ padding: '90px 0' }}>
       <div className="container">
-        {/* Section Header */}
-        <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 50px' }}>
-          <div className="badge-tag-amber" style={{ marginBottom: '16px' }}>
+        {/* Header */}
+        <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 50px' }}>
+          <div className="badge-tag" style={{ marginBottom: '16px' }}>
             <Calculator size={14} />
-            <span>{lang === 'he' ? 'סימולטור חיסכון אינטראקטיבי' : 'Interactive ROI Calculator'}</span>
+            <span>ROI Calculator</span>
           </div>
           <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, marginBottom: '16px' }}>
             {calcData.title}
@@ -42,12 +42,12 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
 
         {/* Calculator Main Box */}
         <div
-          className="glass-panel"
+          className="glass-panel grid-responsive-2"
           style={{
             padding: '40px',
-            border: '1px solid rgba(245, 158, 11, 0.3)',
-            maxWidth: '1000px',
-            margin: '0 auto',
+            border: '1px solid rgba(59, 130, 246, 0.3)',
+            borderRadius: '24px',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
           }}
         >
           <div
@@ -62,7 +62,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
               {/* Slider 1: Apartments Count */}
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <label style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f3f4f6' }}>
+                  <label htmlFor="calc-apartments-slider" style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f3f4f6' }}>
                     {calcData.apartmentsLabel}
                   </label>
                   <span
@@ -85,6 +85,11 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
                   max="150"
                   step="2"
                   value={apartments}
+                  aria-label={calcData.apartmentsLabel}
+                  aria-valuemin={6}
+                  aria-valuemax={150}
+                  aria-valuenow={apartments}
+                  aria-valuetext={`${apartments} ${lang === 'he' ? 'דירות' : 'units'}`}
                   onChange={(e) => setApartments(Number(e.target.value))}
                   style={{
                     width: '100%',
@@ -105,7 +110,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
               {/* Slider 2: Monthly Dues */}
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <label style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f3f4f6' }}>
+                  <label htmlFor="calc-dues-slider" style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f3f4f6' }}>
                     {calcData.duesLabel}
                   </label>
                   <span
@@ -128,6 +133,11 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
                   max="2000"
                   step="50"
                   value={dues}
+                  aria-label={calcData.duesLabel}
+                  aria-valuemin={100}
+                  aria-valuemax={2000}
+                  aria-valuenow={dues}
+                  aria-valuetext={`${currencySymbol}${dues}`}
                   onChange={(e) => setDues(Number(e.target.value))}
                   style={{
                     width: '100%',

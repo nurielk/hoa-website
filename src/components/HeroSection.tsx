@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { Language } from '../types';
+import { Language, AppMockupData, MockupTransaction } from '../types';
 import {
   Sparkles,
-  Zap,
-  CheckCircle2,
-  ArrowLeft,
-  ArrowRight,
+  Building,
   CreditCard,
   Wrench,
+  Zap,
+  CheckCircle2,
   Vote,
-  Building,
+  ArrowLeft,
+  ArrowRight,
 } from 'lucide-react';
 
 interface HeroSectionProps {
@@ -20,7 +20,7 @@ interface HeroSectionProps {
     subtitle: string;
     highlights: string[];
   };
-  mockupData: any;
+  mockupData: AppMockupData;
   onOpenDemoModal: () => void;
 }
 
@@ -305,7 +305,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
                   {/* Transactions Ticker */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    {mockupData.recentTransactions.map((tx: any, idx: number) => (
+                    {mockupData.recentTransactions.map((tx: MockupTransaction, idx: number) => (
                       <div
                         key={idx}
                         style={{
