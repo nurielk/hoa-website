@@ -9,7 +9,7 @@ interface WhatsAppWidgetProps {
 
 export const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({
   lang,
-  phoneNumber = '972779988770',
+  phoneNumber = '972544704654',
 }) => {
   const [tooltipDismissed, setTooltipDismissed] = useState(false);
   const isRtl = lang === 'he';

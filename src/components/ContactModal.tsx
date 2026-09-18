@@ -447,7 +447,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
             {submittedData && (
               <div style={{ marginBottom: '16px' }}>
                 <a
-                  href={`https://wa.me/972779988770?text=${encodeURIComponent(
+                  href={`https://wa.me/972544704654?text=${encodeURIComponent(
                     isRtl
                       ? `שלום DayarPlus! שמי ${submittedData.name}, ${submittedData.role} בבניין של ${submittedData.apartments} דירות (מזהה פנייה: #${submittedLeadId}). הרגע מילאתי טופס הדגמה באתר ואשמח לתאם שיחה!`
                       : `Hello DayarPlus! My name is ${submittedData.name}, ${submittedData.role} (${submittedData.apartments} units, Ref: #${submittedLeadId}). I just submitted a demo request and would love to chat!`
