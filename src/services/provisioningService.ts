@@ -97,9 +97,7 @@ const PROVISIONING_API_KEY =
 
 const APP_BASE_URL =
   import.meta.env.VITE_APP_URL ||
-  (typeof window !== 'undefined' && window.location.origin
-    ? window.location.origin
-    : 'https://dayarplus.knuriel.workers.dev');
+  'https://dayarplus.knuriel.workers.dev';
 
 /**
  * 1. PCI-DSS Compliant Card Tokenization / Pre-Authorization
@@ -161,9 +159,9 @@ export async function provisionTenantInProjectB(
       throw new Error(data.error || `Provisioning failed with status: ${response.status}`);
     }
 
-    // Normalize onboarding URL if remote server returns localhost:5173 while testing locally on another port
-    if (data.onboarding_url && data.onboarding_url.includes('localhost:5173')) {
-      data.onboarding_url = data.onboarding_url.replace('http://localhost:5173', APP_BASE_URL);
+    // Normalize onboarding URL if remote server returns localhost URL so user never gets sent to localhost
+    if (data.onboarding_url && /localhost|127\.0\.0\.1/.test(data.onboarding_url)) {
+      data.onboarding_url = data.onboarding_url.replace(/https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/, APP_BASE_URL);
     }
 
     return data as ProvisioningSuccessResponse;
