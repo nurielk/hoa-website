@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Language, ModalData } from '../types';
 import { X, CheckCircle, Sparkles, Send, Loader2, AlertCircle, MessageCircle } from 'lucide-react';
 
+import { getStoredUtmData } from '../utils/utmTracker';
+
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -105,6 +107,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
         notes: formData.notes.trim(),
         submittedAt: new Date().toISOString(),
         source: 'dayarplus_marketing_modal',
+        utm: getStoredUtmData(),
       };
 
       // 1. Fail-safe local backup

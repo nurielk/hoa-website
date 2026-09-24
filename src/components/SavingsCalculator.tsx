@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Language, CalculatorData } from '../types';
-import { Calculator, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Calculator, ArrowRight, ArrowLeft, RotateCcw, Copy, Check } from 'lucide-react';
+import { ConfirmModal } from './features/ConfirmModal';
+import { useToast } from '../context/ToastContext';
 
 interface SavingsCalculatorProps {
   lang: Language;
@@ -15,7 +17,10 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
 }) => {
   const [apartments, setApartments] = useState<number>(36);
   const [dues, setDues] = useState<number>(450);
+  const [isConfirmResetOpen, setIsConfirmResetOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
+  const { copyToClipboard } = useToast();
   const currencySymbol = lang === 'he' ? '₪' : '$';
   const isRtl = lang === 'he';
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
@@ -25,29 +30,55 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
   const hoursSaved = Math.max(6, Math.round(apartments * 0.45));
   const yearlyBenefit = (recoveredMonthly * 12) + (hoursSaved * 100 * 12);
 
+  const handleResetConfirm = () => {
+    setApartments(36);
+    setDues(450);
+  };
+
+  const handleCopySummary = async () => {
+    const text = isRtl
+      ? `חישוב חיסכון ב-DayarPlus לבניין בן ${apartments} דירות:
+• הכנסות ועד חודשיות: ${currencySymbol}${monthlyPotential.toLocaleString()}
+• חיסכון באובדן גבייה: +${currencySymbol}${recoveredMonthly.toLocaleString()}/חודש
+• שעות עבודה שנחסכות לוועד: ${hoursSaved} שעות/חודש
+• תועלת שנתית כוללת מוערכת: ${currencySymbol}${yearlyBenefit.toLocaleString()}
+לפרטים: https://dayarplus.co.il`
+      : `DayarPlus Savings estimate for a ${apartments}-unit building:
+• Monthly collected dues: ${currencySymbol}${monthlyPotential.toLocaleString()}
+• Reduced bad debt recovery: +${currencySymbol}${recoveredMonthly.toLocaleString()}/mo
+• HOA committee time saved: ${hoursSaved} hrs/mo
+• Estimated total yearly benefit: ${currencySymbol}${yearlyBenefit.toLocaleString()}
+Learn more: https://dayarplus.co.il`;
+
+    await copyToClipboard(text, isRtl ? 'סיכום החישוב הועתק ללוח!' : 'Savings summary copied to clipboard!');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <section id="calculator" style={{ padding: '90px 0' }}>
+    <section id="calculator" style={{ padding: '90px 0', background: 'var(--bg-primary)' }}>
       <div className="container">
         {/* Header */}
-        <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 50px' }}>
+        <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 40px' }}>
           <div className="badge-tag" style={{ marginBottom: '16px' }}>
             <Calculator size={14} />
             <span>ROI Calculator</span>
           </div>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, marginBottom: '16px' }}>
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, marginBottom: '16px', color: 'var(--text-main)' }}>
             {calcData.title}
           </h2>
-          <p style={{ fontSize: '1.1rem', color: '#9ca3af' }}>{calcData.subtitle}</p>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{calcData.subtitle}</p>
         </div>
 
         {/* Calculator Main Box */}
         <div
-          className="glass-panel grid-responsive-2"
+          className="glass-panel"
           style={{
             padding: '40px',
             border: '1px solid rgba(59, 130, 246, 0.3)',
             borderRadius: '24px',
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
+            boxShadow: 'var(--shadow-card)',
+            background: 'var(--bg-card)',
           }}
         >
           <div
@@ -62,7 +93,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
               {/* Slider 1: Apartments Count */}
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <label htmlFor="calc-apartments-slider" style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f3f4f6' }}>
+                  <label htmlFor="calc-apartments-slider" style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)' }}>
                     {calcData.apartmentsLabel}
                   </label>
                   <span
@@ -100,17 +131,12 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
                     cursor: 'pointer',
                   }}
                 />
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#6b7280', marginTop: '6px' }}>
-                  <span>6</span>
-                  <span>75</span>
-                  <span>150+</span>
-                </div>
               </div>
 
               {/* Slider 2: Monthly Dues */}
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <label htmlFor="calc-dues-slider" style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f3f4f6' }}>
+                  <label htmlFor="calc-dues-slider" style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)' }}>
                     {calcData.duesLabel}
                   </label>
                   <span
@@ -130,12 +156,12 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
                   id="calc-dues-slider"
                   type="range"
                   min="100"
-                  max="2000"
+                  max="2500"
                   step="50"
                   value={dues}
                   aria-label={calcData.duesLabel}
                   aria-valuemin={100}
-                  aria-valuemax={2000}
+                  aria-valuemax={2500}
                   aria-valuenow={dues}
                   aria-valuetext={`${currencySymbol}${dues}`}
                   onChange={(e) => setDues(Number(e.target.value))}
@@ -148,50 +174,56 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
                     cursor: 'pointer',
                   }}
                 />
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#6b7280', marginTop: '6px' }}>
-                  <span>{currencySymbol}100</span>
-                  <span>{currencySymbol}1,000</span>
-                  <span>{currencySymbol}2,000</span>
-                </div>
               </div>
 
-              <div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  padding: '16px',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(255, 255, 255, 0.05)',
-                  fontSize: '0.9rem',
-                  color: '#9ca3af',
-                  lineHeight: 1.5,
-                }}
-              >
-                💡 {lang === 'he' ? 'חישוב הרווחים מתבסס על נתוני הגבייה של 550+ בניינים ב-DayarPlus, עם שיפור ממוצע של 15%-25% בגבייה בזמן.' : 'ROI estimates based on live telemetry across 550+ DayarPlus buildings showing a 15-25% improvement in on-time dues.'}
+              {/* Utility Action Buttons: Reset & Copy */}
+              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                <button
+                  type="button"
+                  onClick={() => setIsConfirmResetOpen(true)}
+                  className="btn-secondary"
+                  style={{ padding: '8px 14px', fontSize: '0.85rem' }}
+                  title={isRtl ? 'אפס מחשבון' : 'Reset calculator'}
+                >
+                  <RotateCcw size={14} />
+                  <span>{isRtl ? 'איפוס ערכים' : 'Reset'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCopySummary}
+                  className="btn-secondary"
+                  style={{ padding: '8px 14px', fontSize: '0.85rem' }}
+                  title={isRtl ? 'העתק תוצאות חישוב' : 'Copy summary'}
+                >
+                  {copied ? <Check size={14} color="#34d399" /> : <Copy size={14} />}
+                  <span>{copied ? (isRtl ? 'הועתק!' : 'Copied!') : (isRtl ? 'העתק חישוב' : 'Copy Results')}</span>
+                </button>
               </div>
             </div>
 
-            {/* Results Output Box */}
+            {/* Results Output Panel */}
             <div
               style={{
-                background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(17, 24, 39, 0.8) 100%)',
+                background: 'var(--bg-glass)',
                 borderRadius: '16px',
                 padding: '28px',
-                border: '1px solid rgba(59, 130, 246, 0.3)',
+                border: '1px solid var(--border-subtle)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
               }}
             >
               <div>
-                <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', marginBottom: '20px' }}>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '20px' }}>
                   {calcData.resultsTitle}
                 </h3>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', marginBottom: '24px' }}>
                   {/* Metric 1 */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.95rem', color: '#d1d5db' }}>{calcData.monthlyRevenue}</span>
-                    <span style={{ fontSize: '1.15rem', fontWeight: 700, color: '#f3f4f6' }}>
+                    <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>{calcData.monthlyRevenue}</span>
+                    <span style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)' }}>
                       {currencySymbol}{monthlyPotential.toLocaleString()}
                     </span>
                   </div>
@@ -245,6 +277,23 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Feature 17: Confirm Reset Modal */}
+      <ConfirmModal
+        isOpen={isConfirmResetOpen}
+        onClose={() => setIsConfirmResetOpen(false)}
+        onConfirm={handleResetConfirm}
+        title={isRtl ? 'איפוס נתוני מחשבון החיסכון' : 'Reset Calculator Values'}
+        message={
+          isRtl
+            ? 'האם ברצונך לאפס את מספר הדירות וגובה דמי הוועד לערכי ברירת המחדל?'
+            : 'Are you sure you want to reset the apartment count and dues to default values?'
+        }
+        confirmLabel={isRtl ? 'אפס נתונים' : 'Reset'}
+        cancelLabel={isRtl ? 'ביטול' : 'Cancel'}
+        type="warning"
+        lang={lang}
+      />
     </section>
   );
 };

@@ -2,6 +2,10 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { Language } from './types';
 import { contentData } from './data/contentData';
 
+import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './context/ToastContext';
+import { initUtmTracker } from './utils/utmTracker';
+
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { StatsSection } from './components/StatsSection';
@@ -12,7 +16,16 @@ import { PricingSection } from './components/PricingSection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { FaqSection } from './components/FaqSection';
 import { Footer } from './components/Footer';
-import { WhatsAppWidget } from './components/WhatsAppWidget';
+
+// 22 Requested Feature Components
+import { TopAnnouncementBar } from './components/features/TopAnnouncementBar';
+import { ScrollProgressBar } from './components/features/ScrollProgressBar';
+import { BackToTop } from './components/features/BackToTop';
+import { GlobalSearchModal } from './components/features/GlobalSearchModal';
+import { FloatingContactHub } from './components/features/FloatingContactHub';
+import { AnnouncementsSection } from './components/features/AnnouncementsSection';
+import { CouponBanner } from './components/features/CouponBanner';
+import { CookieConsentBanner } from './components/features/CookieConsentBanner';
 
 // Code-Splitting: Lazy load heavy interactive modals, dashboard, and 404
 const ContactModal = React.lazy(() =>
@@ -28,10 +41,11 @@ const NotFoundPage = React.lazy(() =>
   import('./components/NotFoundPage').then((m) => ({ default: m.NotFoundPage }))
 );
 
-export const App: React.FC = () => {
+export const AppContent: React.FC = () => {
   const [lang, setLang] = useState<Language>('he');
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [is404, setIs404] = useState<boolean>(false);
   const [userSession, setUserSession] = useState<{
     userRole: 'resident' | 'vaad' | 'management';
@@ -41,12 +55,29 @@ export const App: React.FC = () => {
   const currentContent = contentData[lang];
   const isRtl = lang === 'he';
 
+  // Feature 20: Initialize UTM tracker on page mount
+  useEffect(() => {
+    initUtmTracker();
+  }, []);
+
   // Check URL pathname for 404 detection
   useEffect(() => {
     const path = window.location.pathname;
     if (path !== '/' && path !== '' && path !== '/index.html') {
       setIs404(true);
     }
+  }, []);
+
+  // Global Ctrl+K / Cmd+K search shortcut listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   useEffect(() => {
@@ -82,7 +113,7 @@ export const App: React.FC = () => {
   // If 404 path is accessed
   if (is404) {
     return (
-      <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0b0f19' }} />}>
+      <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }} />}>
         <NotFoundPage lang={lang} onGoHome={handleGoHome} />
       </Suspense>
     );
@@ -92,7 +123,7 @@ export const App: React.FC = () => {
   if (userSession) {
     return (
       <div dir={isRtl ? 'rtl' : 'ltr'}>
-        <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0b0f19' }} />}>
+        <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }} />}>
           <AppPortalDashboard
             lang={lang}
             userRole={userSession.userRole}
@@ -105,18 +136,44 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }} dir={isRtl ? 'rtl' : 'ltr'}>
-      {/* Navigation Header */}
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        background: 'var(--bg-primary)',
+        color: 'var(--text-main)',
+      }}
+      dir={isRtl ? 'rtl' : 'ltr'}
+    >
+      {/* Feature 9: Accessible Skip to Content Link */}
+      <a href="#main-content" className="skip-to-content">
+        {isRtl ? 'דלג לתוכן המרכזי' : 'Skip to main content'}
+      </a>
+
+      {/* Feature 5: Smooth Scroll Progress Indicator */}
+      <ScrollProgressBar />
+
+      {/* Feature 2: Slim Top Announcement Bar */}
+      <TopAnnouncementBar
+        lang={lang}
+        onOpenDemo={() => setIsDemoModalOpen(true)}
+      />
+
+      {/* Navigation Header (Feature 1: Dark Mode, Feature 2: Slim Header, Feature 3: Mobile Menu, Feature 8: Search Trigger) */}
       <Navbar
         lang={lang}
         onLanguageToggle={toggleLanguage}
         onOpenDemoModal={() => setIsDemoModalOpen(true)}
         onOpenLoginModal={() => setIsLoginModalOpen(true)}
+        onOpenSearch={() => setIsSearchOpen(true)}
         navItems={currentContent.nav}
         buttons={currentContent.buttons}
       />
 
-      <main style={{ flex: 1 }}>
+      {/* Main Content Landmark */}
+      <main id="main-content" tabIndex={-1} style={{ flex: 1, outline: 'none' }}>
         {/* 1. Hero Section with Interactive Live App Preview */}
         <HeroSection
           lang={lang}
@@ -138,14 +195,14 @@ export const App: React.FC = () => {
         {/* 4. Complete Product Feature Grid */}
         <FeatureGrid featuresData={currentContent.features} />
 
-        {/* 5. Interactive ROI & Time Savings Calculator */}
+        {/* 5. Interactive ROI & Time Savings Calculator (Feature 17: Confirm modal, Feature 21: Copy summary) */}
         <SavingsCalculator
           lang={lang}
           calcData={currentContent.calculator}
           onOpenDemoModal={() => setIsDemoModalOpen(true)}
         />
 
-        {/* 6. Transparent Tier Pricing & Plan Comparison */}
+        {/* 6. Transparent Tier Pricing & Plan Comparison (Feature 19: Print routine, Feature 22: Last updated badge) */}
         <PricingSection
           lang={lang}
           pricingData={currentContent.pricing}
@@ -155,11 +212,14 @@ export const App: React.FC = () => {
         {/* 7. Customer Reviews & Social Proof */}
         <TestimonialsSection testimonialsData={currentContent.testimonials} />
 
-        {/* 8. Frequently Asked Questions (FAQ Accordion with Dynamic Search) */}
-        <FaqSection faqData={currentContent.faq} />
+        {/* 8. System Announcements & Bulletins Section (Feature 12) */}
+        <AnnouncementsSection lang={lang} />
+
+        {/* 9. Frequently Asked Questions (Feature 11: FAQ Accordion with Categories & Search) */}
+        <FaqSection faqData={currentContent.faq} lang={lang} />
       </main>
 
-      {/* 9. Footer & Accessibility links */}
+      {/* 10. Footer (Feature 13: Newsletter, Feature 14: Interactive Counter, Feature 19: Print Routine, Feature 21: Copy Phone/Email, Feature 22: Last Updated) */}
       <Footer
         lang={lang}
         footerData={currentContent.footer}
@@ -167,10 +227,29 @@ export const App: React.FC = () => {
         onOpenDemoModal={() => setIsDemoModalOpen(true)}
       />
 
-      {/* 10. WhatsApp Quick Chat Floating Widget */}
-      <WhatsAppWidget lang={lang} />
+      {/* Feature 6: Back to Top Button */}
+      <BackToTop lang={lang} />
 
-      {/* 11. Lazy Loaded Lead Capture Demo Modal */}
+      {/* Feature 10: Multi-Channel Floating Contact Hub */}
+      <FloatingContactHub
+        lang={lang}
+        onOpenDemoModal={() => setIsDemoModalOpen(true)}
+      />
+
+      {/* Feature 15: Promotional Coupon Banner */}
+      <CouponBanner lang={lang} />
+
+      {/* Feature 16: Cookie Consent Banner & Badge */}
+      <CookieConsentBanner lang={lang} />
+
+      {/* Feature 8: Global Live Search Modal */}
+      <GlobalSearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        lang={lang}
+      />
+
+      {/* Feature 20: Lead Capture Demo Modal with UTM Tracker */}
       {isDemoModalOpen && (
         <Suspense fallback={null}>
           <ContactModal
@@ -183,7 +262,7 @@ export const App: React.FC = () => {
         </Suspense>
       )}
 
-      {/* 12. Lazy Loaded Secure Login Modal */}
+      {/* Secure Login Modal */}
       {isLoginModalOpen && (
         <Suspense fallback={null}>
           <LoginModal
@@ -198,6 +277,16 @@ export const App: React.FC = () => {
         </Suspense>
       )}
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <ThemeProvider>
+      <ToastProvider>
+        <AppContent />
+      </ToastProvider>
+    </ThemeProvider>
   );
 };
 

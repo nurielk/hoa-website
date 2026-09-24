@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { FaqItem } from '../types';
-import { ChevronDown, HelpCircle, Search, X } from 'lucide-react';
+import { ChevronDown, ChevronUp, HelpCircle, Search, X, Copy, Check } from 'lucide-react';
+import { useToast } from '../context/ToastContext';
+import { LastUpdatedBadge } from './features/LastUpdatedBadge';
 
 interface FaqSectionProps {
   faqData: {
@@ -8,48 +10,95 @@ interface FaqSectionProps {
     subtitle: string;
     items: FaqItem[];
   };
+  lang?: 'he' | 'en';
 }
 
-export const FaqSection: React.FC<FaqSectionProps> = ({ faqData }) => {
-  const [openId, setOpenId] = useState<string | null>('faq-1');
+export const FaqSection: React.FC<FaqSectionProps> = ({ faqData, lang = 'he' }) => {
+  const [openIds, setOpenIds] = useState<string[]>(['faq-1']);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const { copyToClipboard } = useToast();
+  const isRtl = lang === 'he';
 
-  const toggleOpen = (id: string) => {
-    setOpenId(openId === id ? null : id);
+  const toggleItem = (id: string) => {
+    setOpenIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
-  const filteredItems = useMemo(() => {
-    if (!searchQuery.trim()) return faqData.items;
-    const q = searchQuery.toLowerCase().trim();
-    return faqData.items.filter(
-      (item) =>
-        item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q)
+  const handleExpandAll = () => {
+    if (openIds.length === faqData.items.length) {
+      setOpenIds([]);
+    } else {
+      setOpenIds(faqData.items.map((i) => i.id));
+    }
+  };
+
+  const handleCopyQuestion = async (item: FaqItem) => {
+    const textToCopy = `${item.question}\n\n${item.answer}`;
+    await copyToClipboard(
+      textToCopy,
+      isRtl ? 'תשובה הועתקה ללוח בהצלחה!' : 'FAQ answer copied to clipboard!'
     );
-  }, [faqData.items, searchQuery]);
+    setCopiedId(item.id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const categories = [
+    { id: 'all', label: isRtl ? 'כל השאלות' : 'All Topics' },
+    { id: 'general', label: isRtl ? 'כללי והקמה' : 'General' },
+    { id: 'payments', label: isRtl ? 'תשלומים וסליקה' : 'Payments' },
+    { id: 'vaad', label: isRtl ? 'ועד בית' : 'HOA Committee' },
+    { id: 'management', label: isRtl ? 'חברות ניהול' : 'Management' },
+  ];
+
+  const filteredItems = useMemo(() => {
+    let result = faqData.items;
+
+    if (selectedCategory !== 'all') {
+      result = result.filter((item) => item.category === selectedCategory);
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      result = result.filter(
+        (item) =>
+          item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q)
+      );
+    }
+
+    return result;
+  }, [faqData.items, selectedCategory, searchQuery]);
 
   return (
-    <section id="faq" style={{ padding: '90px 0', background: 'rgba(17, 24, 39, 0.4)' }}>
-      <div className="container" style={{ maxWidth: '850px' }}>
+    <section id="faq" style={{ padding: '90px 0', background: 'var(--bg-glass)' }}>
+      <div className="container" style={{ maxWidth: '880px' }}>
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <div className="badge-tag" style={{ marginBottom: '16px' }}>
-            <HelpCircle size={14} />
-            <span>FAQ</span>
+        <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+            <div className="badge-tag">
+              <HelpCircle size={14} />
+              <span>FAQ</span>
+            </div>
+            <LastUpdatedBadge lang={lang} />
           </div>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, marginBottom: '16px' }}>
+
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, marginBottom: '16px', color: 'var(--text-main)' }}>
             {faqData.title}
           </h2>
-          <p style={{ fontSize: '1.1rem', color: '#9ca3af' }}>{faqData.subtitle}</p>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{faqData.subtitle}</p>
         </div>
 
         {/* Dynamic FAQ Search Input */}
-        <div style={{ position: 'relative', marginBottom: '32px' }}>
+        <div style={{ position: 'relative', marginBottom: '20px' }}>
           <div
             style={{
               position: 'absolute',
               top: '50%',
               transform: 'translateY(-50%)',
-              right: '16px',
+              right: isRtl ? '16px' : 'auto',
+              left: isRtl ? 'auto' : '16px',
               color: '#60a5fa',
               display: 'flex',
               alignItems: 'center',
@@ -62,29 +111,34 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ faqData }) => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="חיפוש מהיר בשאלות נפוצות (לדוגמה: אשראי, דוחות, ביטול)..."
-            aria-label="חיפוש בשאלות נפוצות"
+            placeholder={
+              isRtl
+                ? 'חיפוש מהיר בשאלות נפוצות (לדוגמה: אשראי, דוחות, ביטול)...'
+                : 'Search FAQ (e.g. credit card, cancel, security, reports)...'
+            }
+            aria-label={isRtl ? 'חיפוש בשאלות נפוצות' : 'Search FAQ'}
             style={{
               width: '100%',
-              padding: '14px 44px 14px 18px',
+              padding: isRtl ? '14px 44px 14px 18px' : '14px 18px 14px 44px',
               borderRadius: '14px',
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(59, 130, 246, 0.3)',
-              color: '#ffffff',
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border-subtle)',
+              color: 'var(--text-main)',
               fontSize: '1rem',
               outline: 'none',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+              boxShadow: 'var(--shadow-card)',
             }}
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              aria-label="נקה חיפוש"
+              aria-label={isRtl ? 'נקה חיפוש' : 'Clear search'}
               style={{
                 position: 'absolute',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                left: '16px',
+                left: isRtl ? '16px' : 'auto',
+                right: isRtl ? 'auto' : '16px',
                 background: 'none',
                 border: 'none',
                 color: '#9ca3af',
@@ -98,92 +152,146 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ faqData }) => {
           )}
         </div>
 
-        {/* Accordion Items */}
-        {filteredItems.length === 0 ? (
-          <div
-            style={{
-              textAlign: 'center',
-              padding: '40px 20px',
-              color: '#9ca3af',
-              background: 'rgba(255, 255, 255, 0.02)',
-              borderRadius: '16px',
-              border: '1px dashed rgba(255, 255, 255, 0.1)',
-            }}
-          >
-            לא נמצאו שאלות התואמות לחיפוש "{searchQuery}". נסו מילות מפתח אחרות.
+        {/* Categories Bar & Expand All */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px',
+            marginBottom: '28px',
+          }}
+        >
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={selectedCategory === cat.id ? 'btn-primary' : 'btn-secondary'}
+                style={{
+                  padding: '6px 14px',
+                  fontSize: '0.82rem',
+                  borderRadius: '9999px',
+                }}
+              >
+                {cat.label}
+              </button>
+            ))}
           </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {filteredItems.map((item) => {
-              const isOpen = openId === item.id;
 
+          <button
+            onClick={handleExpandAll}
+            className="btn-secondary"
+            style={{ padding: '6px 14px', fontSize: '0.82rem', borderRadius: '9999px' }}
+          >
+            {openIds.length === faqData.items.length
+              ? (isRtl ? 'כווץ הכל' : 'Collapse All')
+              : (isRtl ? 'פתח הכל' : 'Expand All')}
+          </button>
+        </div>
+
+        {/* FAQ Accordion List */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          {filteredItems.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-muted)' }}>
+              <p>{isRtl ? 'לא נמצאו שאלות התואמות לחיפוש.' : 'No matching questions found.'}</p>
+            </div>
+          ) : (
+            filteredItems.map((item) => {
+              const isOpen = openIds.includes(item.id);
               return (
                 <div
                   key={item.id}
                   className="glass-panel"
                   style={{
-                    padding: '20px 24px',
-                    border: isOpen ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid rgba(255, 255, 255, 0.08)',
-                    transition: 'border-color 0.2s ease',
+                    borderRadius: '16px',
+                    border: isOpen
+                      ? '1px solid rgba(59, 130, 246, 0.4)'
+                      : '1px solid var(--border-subtle)',
+                    overflow: 'hidden',
+                    transition: 'all 0.25s ease',
                   }}
                 >
                   <button
-                    type="button"
-                    id={`faq-btn-${item.id}`}
+                    onClick={() => toggleItem(item.id)}
                     aria-expanded={isOpen}
-                    aria-controls={`faq-answer-${item.id}`}
-                    onClick={() => toggleOpen(item.id)}
                     style={{
                       width: '100%',
-                      background: 'none',
-                      border: 'none',
-                      padding: 0,
-                      color: 'inherit',
-                      cursor: 'pointer',
+                      padding: '20px 24px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
+                      background: 'transparent',
+                      border: 'none',
+                      color: 'var(--text-main)',
+                      fontSize: '1.05rem',
+                      fontWeight: 700,
+                      textAlign: isRtl ? 'right' : 'left',
+                      cursor: 'pointer',
                       gap: '16px',
-                      textAlign: 'inherit',
-                      outline: 'none',
                     }}
                   >
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>
-                      {item.question}
-                    </h3>
+                    <span style={{ flex: 1 }}>{item.question}</span>
                     <div
                       style={{
-                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                        transition: 'transform 0.3s ease',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '8px',
+                        background: isOpen ? 'rgba(59, 130, 246, 0.2)' : 'var(--bg-glass)',
+                        color: isOpen ? '#60a5fa' : 'var(--text-muted)',
+                        transition: 'all 0.2s ease',
                         flexShrink: 0,
                       }}
                     >
-                      <ChevronDown size={20} color="#60a5fa" />
+                      {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                     </div>
                   </button>
 
                   {isOpen && (
                     <div
-                      id={`faq-answer-${item.id}`}
-                      role="region"
-                      aria-labelledby={`faq-btn-${item.id}`}
                       style={{
-                        marginTop: '16px',
+                        padding: '0 24px 22px',
+                        color: 'var(--text-muted)',
+                        fontSize: '0.98rem',
+                        lineHeight: 1.7,
+                        borderTop: '1px solid var(--border-subtle)',
                         paddingTop: '16px',
-                        borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-                        fontSize: '1rem',
-                        color: '#9ca3af',
-                        lineHeight: 1.6,
                       }}
                     >
-                      {item.answer}
+                      <p>{item.answer}</p>
+
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'flex-end',
+                          marginTop: '12px',
+                        }}
+                      >
+                        <button
+                          onClick={() => handleCopyQuestion(item)}
+                          className="btn-secondary"
+                          style={{
+                            padding: '4px 10px',
+                            fontSize: '0.78rem',
+                            gap: '4px',
+                          }}
+                          title={isRtl ? 'העתק תשובה ללוח' : 'Copy answer'}
+                        >
+                          {copiedId === item.id ? <Check size={12} color="#34d399" /> : <Copy size={12} />}
+                          <span>{copiedId === item.id ? (isRtl ? 'הועתק!' : 'Copied!') : (isRtl ? 'העתק תשובה' : 'Copy')}</span>
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
               );
-            })}
-          </div>
-        )}
+            })
+          )}
+        </div>
       </div>
     </section>
   );

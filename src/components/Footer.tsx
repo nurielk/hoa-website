@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Language, FooterData } from '../types';
-import { Building2, Phone, Mail, ShieldCheck, X } from 'lucide-react';
+import { Building2, Phone, Mail, ShieldCheck, X, Copy, Check, Printer } from 'lucide-react';
+import { NewsletterForm } from './features/NewsletterForm';
+import { InteractiveCounter } from './features/InteractiveCounter';
+import { LastUpdatedBadge } from './features/LastUpdatedBadge';
+import { useToast } from '../context/ToastContext';
 
 interface FooterProps {
   lang: Language;
@@ -16,6 +20,9 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenDemoModal,
 }) => {
   const [activeLegalModal, setActiveLegalModal] = useState<'accessibility' | 'privacy' | 'terms' | null>(null);
+  const [copiedPhone, setCopiedPhone] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const { copyToClipboard } = useToast();
   const isRtl = lang === 'he';
 
   useEffect(() => {
@@ -30,6 +37,22 @@ export const Footer: React.FC<FooterProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeLegalModal]);
+
+  const handleCopyPhone = async () => {
+    await copyToClipboard(footerData.contactPhone, isRtl ? 'מספר טלפון הועתק ללוח!' : 'Phone number copied!');
+    setCopiedPhone(true);
+    setTimeout(() => setCopiedPhone(false), 2000);
+  };
+
+  const handleCopyEmail = async () => {
+    await copyToClipboard(footerData.contactEmail, isRtl ? 'כתובת מייל הועתקה ללוח!' : 'Email copied!');
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   const getLegalContent = () => {
     switch (activeLegalModal) {
@@ -47,7 +70,8 @@ export const Footer: React.FC<FooterProps> = ({
               </p>
               <ul style={{ paddingRight: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <li>תמיכה בניווט מלא באמצעות מקלדת (Tab, Enter, חיצים).</li>
-                <li>ניגודיות צבעים מותאמת ועמידה ביחסי קונטרסט תקניים.</li>
+                <li>קישור ישיר "דלג לתוכן מרכזי" לקוראי מסך.</li>
+                <li>ניגודיות צבעים מותאמת ועמידה ביחסי קונטרסט תקניים במצב כהה ובהיר.</li>
                 <li>התאמה לקוראי מסך מודרניים (NVDA, JAWS, VoiceOver).</li>
                 <li>עיצוב רספונסיבי המאפשר הגדלת טקסטים עד 200% ללא פגיעה במבנה.</li>
               </ul>
@@ -135,19 +159,22 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <footer
       style={{
-        background: '#070a12',
-        borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+        background: 'var(--bg-primary)',
+        borderTop: '1px solid var(--border-subtle)',
         padding: '70px 0 30px',
         position: 'relative',
       }}
     >
       <div className="container">
+        {/* Feature 13: Newsletter Form */}
+        <NewsletterForm lang={lang} />
+
         <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
             gap: '40px',
-            marginBottom: '60px',
+            margin: '50px 0',
           }}
         >
           {/* Brand Info */}
@@ -175,40 +202,46 @@ export const Footer: React.FC<FooterProps> = ({
               >
                 <Building2 size={20} color="#ffffff" />
               </div>
-              <span style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>
+              <span style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--text-main)' }}>
                 DayarPlus<span style={{ color: '#3b82f6' }}>.SYSTEM</span>
               </span>
             </a>
 
-            <p style={{ fontSize: '0.95rem', color: '#9ca3af', lineHeight: 1.6, marginBottom: '20px' }}>
+            <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '20px' }}>
               {footerData.tagline}
             </p>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34d399', fontSize: '0.85rem', fontWeight: 600 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34d399', fontSize: '0.85rem', fontWeight: 600, marginBottom: '16px' }}>
               <ShieldCheck size={16} />
               <span>{lang === 'he' ? 'עומד בתקן אבטחת תשלומים PCI-DSS' : 'Certified PCI-DSS Payment Security'}</span>
             </div>
+
+            {/* Feature 14: Interactive Counter */}
+            <InteractiveCounter lang={lang} />
           </div>
 
           {/* Quick Nav */}
           <div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', marginBottom: '18px' }}>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '18px' }}>
               {lang === 'he' ? 'ניווט מהיר' : 'Quick Navigation'}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.92rem' }}>
-              <a href="#features" style={{ color: '#9ca3af', textDecoration: 'none' }}>
+              <a href="#features" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
                 {lang === 'he' ? 'תכונות הפלטפורמה' : 'Features'}
               </a>
-              <a href="#solutions" style={{ color: '#9ca3af', textDecoration: 'none' }}>
+              <a href="#solutions" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
                 {lang === 'he' ? 'פתרונות לועד בית וחברות ניהול' : 'Solutions'}
               </a>
-              <a href="#calculator" style={{ color: '#9ca3af', textDecoration: 'none' }}>
+              <a href="#calculator" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
                 {lang === 'he' ? 'מחשבון חיסכון' : 'ROI Calculator'}
               </a>
-              <a href="#pricing" style={{ color: '#9ca3af', textDecoration: 'none' }}>
+              <a href="#pricing" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
                 {lang === 'he' ? 'מסלולים ומחירים' : 'Pricing'}
               </a>
-              <a href="#faq" style={{ color: '#9ca3af', textDecoration: 'none' }}>
+              <a href="#announcements" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
+                {lang === 'he' ? 'לוח הודעות ועדכונים' : 'Bulletins'}
+              </a>
+              <a href="#faq" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
                 {lang === 'he' ? 'שאלות נפוצות' : 'FAQ'}
               </a>
             </div>
@@ -216,25 +249,60 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Contact Details */}
           <div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', marginBottom: '18px' }}>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '18px' }}>
               {lang === 'he' ? 'יצירת קשר ותמיכה' : 'Contact & Support'}
             </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.92rem', color: '#9ca3af' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.92rem', color: 'var(--text-muted)' }}>
+              {/* Phone with click-to-copy */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Phone size={16} color="#60a5fa" />
-                <span>{footerData.contactPhone}</span>
+                <a href={`tel:${footerData.contactPhone.replace(/-/g, '')}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {footerData.contactPhone}
+                </a>
+                <button
+                  onClick={handleCopyPhone}
+                  aria-label={isRtl ? 'העתק מספר טלפון' : 'Copy phone'}
+                  style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer', padding: '2px' }}
+                >
+                  {copiedPhone ? <Check size={13} color="#34d399" /> : <Copy size={13} />}
+                </button>
               </div>
+
+              {/* Email with click-to-copy */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Mail size={16} color="#60a5fa" />
-                <span>{footerData.contactEmail}</span>
+                <a href={`mailto:${footerData.contactEmail}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {footerData.contactEmail}
+                </a>
+                <button
+                  onClick={handleCopyEmail}
+                  aria-label={isRtl ? 'העתק כתובת מייל' : 'Copy email'}
+                  style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer', padding: '2px' }}
+                >
+                  {copiedEmail ? <Check size={13} color="#34d399" /> : <Copy size={13} />}
+                </button>
               </div>
-              <button
-                onClick={onOpenDemoModal}
-                className="btn-secondary"
-                style={{ marginTop: '10px', padding: '8px 16px', fontSize: '0.85rem', width: 'fit-content' }}
-              >
-                {buttons.scheduleDemo}
-              </button>
+
+              <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
+                <button
+                  onClick={onOpenDemoModal}
+                  className="btn-secondary"
+                  style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                >
+                  {buttons.scheduleDemo}
+                </button>
+
+                {/* Print page button */}
+                <button
+                  onClick={handlePrint}
+                  className="btn-secondary print-allow"
+                  style={{ padding: '8px 12px', fontSize: '0.85rem' }}
+                  title={isRtl ? 'הדפס עמוד זה' : 'Print this page'}
+                >
+                  <Printer size={15} />
+                  <span>{isRtl ? 'הדפסה' : 'Print'}</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -243,24 +311,28 @@ export const Footer: React.FC<FooterProps> = ({
         <div
           style={{
             paddingTop: '24px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+            borderTop: '1px solid var(--border-subtle)',
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '16px',
             fontSize: '0.85rem',
-            color: '#6b7280',
+            color: 'var(--text-dim)',
           }}
         >
-          <div>{footerData.rights}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <span>{footerData.rights}</span>
+            <LastUpdatedBadge lang={lang} />
+          </div>
+
           <div style={{ display: 'flex', gap: '20px' }}>
             <button
               onClick={() => setActiveLegalModal('accessibility')}
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#9ca3af',
+                color: 'var(--text-muted)',
                 cursor: 'pointer',
                 fontSize: '0.85rem',
                 padding: 0,
@@ -274,7 +346,7 @@ export const Footer: React.FC<FooterProps> = ({
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#9ca3af',
+                color: 'var(--text-muted)',
                 cursor: 'pointer',
                 fontSize: '0.85rem',
                 padding: 0,
@@ -288,7 +360,7 @@ export const Footer: React.FC<FooterProps> = ({
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#9ca3af',
+                color: 'var(--text-muted)',
                 cursor: 'pointer',
                 fontSize: '0.85rem',
                 padding: 0,
@@ -332,19 +404,21 @@ export const Footer: React.FC<FooterProps> = ({
               border: '1px solid rgba(59, 130, 246, 0.3)',
               direction: isRtl ? 'rtl' : 'ltr',
               textAlign: isRtl ? 'right' : 'left',
+              background: 'var(--bg-secondary)',
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setActiveLegalModal(null)}
+              aria-label={isRtl ? 'סגור' : 'Close'}
               style={{
                 position: 'absolute',
                 top: '20px',
                 left: isRtl ? '20px' : 'auto',
                 right: isRtl ? 'auto' : '20px',
-                background: 'rgba(255, 255, 255, 0.06)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                color: '#9ca3af',
+                background: 'var(--bg-glass)',
+                border: '1px solid var(--border-subtle)',
+                color: 'var(--text-muted)',
                 borderRadius: '8px',
                 width: '36px',
                 height: '36px',
@@ -357,11 +431,11 @@ export const Footer: React.FC<FooterProps> = ({
               <X size={18} />
             </button>
 
-            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '20px' }}>
+            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '20px' }}>
               {modalContent.title}
             </h3>
 
-            <div style={{ color: '#d1d5db', fontSize: '0.98rem' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.98rem' }}>
               {modalContent.content}
             </div>
           </div>
