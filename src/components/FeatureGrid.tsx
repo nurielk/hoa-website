@@ -135,7 +135,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = ({ featuresData }) => {
                 {feature.benefits.map((benefit, idx) => (
                   <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Check size={14} color="#3b82f6" />
-                    <span style={{ fontSize: '0.88rem', color: '#d1d5db', fontWeight: 600 }}>
+                    <span style={{ fontSize: '0.88rem', color: 'var(--text-main)', fontWeight: 600 }}>
                       {benefit}
                     </span>
                   </div>

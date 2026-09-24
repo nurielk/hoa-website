@@ -45,7 +45,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         }}
       />
 
-      <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: '960px' }}>
+      <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: '1240px' }}>
         {/* Main Hero Copy - Centered & Highly Impactful */}
         <div style={{ textAlign: 'center', margin: '0 auto' }}>
           <div className="badge-tag" style={{ marginBottom: '20px', padding: '6px 16px' }}>
@@ -118,18 +118,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </a>
           </div>
 
-          {/* Highlights List Banner - High Prominence & Large Font */}
+          {/* Highlights List Banner - Single Continuous Row */}
           <div
-            className="glass-panel"
+            className="glass-panel hero-highlights-row"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: '18px',
-              padding: '26px 32px',
-              borderRadius: '22px',
+              gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+              gap: '14px',
+              padding: '20px 24px',
+              borderRadius: '20px',
               background: 'var(--bg-card)',
               border: '1.5px solid rgba(59, 130, 246, 0.4)',
               boxShadow: '0 14px 40px -10px rgba(59, 130, 246, 0.2)',
+              alignItems: 'center',
             }}
           >
             {heroData.highlights.map((item, idx) => (
@@ -139,9 +140,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '14px',
-                  padding: '12px 18px',
-                  borderRadius: '14px',
+                  gap: '10px',
+                  padding: '12px 14px',
+                  borderRadius: '12px',
                   background: 'var(--bg-glass)',
                   border: '1px solid var(--border-subtle)',
                   boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
@@ -149,8 +150,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               >
                 <div
                   style={{
-                    width: '36px',
-                    height: '36px',
+                    width: '32px',
+                    height: '32px',
                     borderRadius: '50%',
                     background: 'rgba(16, 185, 129, 0.18)',
                     display: 'flex',
@@ -159,14 +160,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     flexShrink: 0,
                   }}
                 >
-                  <CheckCircle2 size={22} color="#10b981" />
+                  <CheckCircle2 size={20} color="#10b981" />
                 </div>
                 <span
                   style={{
-                    fontSize: 'clamp(1.15rem, 1.4vw, 1.35rem)',
+                    fontSize: 'clamp(0.98rem, 1.15vw, 1.22rem)',
                     color: 'var(--text-main)',
                     fontWeight: 800,
                     letterSpacing: '-0.01em',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   {item}
