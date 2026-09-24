@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Language, PricingPlan } from '../types';
-import { Check, Printer, ShieldCheck } from 'lucide-react';
+import { Check, Printer, ShieldCheck, Sparkles, Zap } from 'lucide-react';
 import { LastUpdatedBadge } from './features/LastUpdatedBadge';
+import { PlanTier, SubscriptionType, BillingCycle } from '../services/provisioningService';
 
 interface PricingSectionProps {
   lang: Language;
@@ -13,18 +14,41 @@ interface PricingSectionProps {
     plans: PricingPlan[];
   };
   onOpenDemoModal: () => void;
+  onOpenCheckoutModal?: (
+    planTier: PlanTier,
+    subscriptionType: SubscriptionType,
+    billingCycle: BillingCycle
+  ) => void;
 }
 
 export const PricingSection: React.FC<PricingSectionProps> = ({
   lang,
   pricingData,
   onOpenDemoModal,
+  onOpenCheckoutModal,
 }) => {
   const [isYearly, setIsYearly] = useState<boolean>(true);
+  const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>('TRIAL');
   const isRtl = lang === 'he';
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const getPlanTier = (planId: string): PlanTier => {
+    if (planId.includes('starter')) return 'STARTER';
+    if (planId.includes('enterprise')) return 'ENTERPRISE';
+    return 'PRO';
+  };
+
+  const handleSelectPlan = (plan: PricingPlan) => {
+    const tier = getPlanTier(plan.id);
+    const cycle: BillingCycle = isYearly ? 'YEARLY' : 'MONTHLY';
+    if (onOpenCheckoutModal) {
+      onOpenCheckoutModal(tier, subscriptionType, cycle);
+    } else {
+      onOpenDemoModal();
+    }
   };
 
   return (
@@ -46,7 +70,73 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{pricingData.subtitle}</p>
         </div>
 
-        {/* Controls: Monthly / Yearly Billing Toggle + Print Button */}
+        {/* Primary Model Switcher: 30-Day Free Trial vs Immediate Paid Subscription */}
+        <div
+          style={{
+            maxWidth: '560px',
+            margin: '0 auto 28px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '8px',
+            background: 'var(--bg-card)',
+            padding: '6px',
+            borderRadius: '16px',
+            border: '1.5px solid rgba(59, 130, 246, 0.35)',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
+          }}
+        >
+          {/* Option A: 30-Day Free Trial */}
+          <button
+            type="button"
+            onClick={() => setSubscriptionType('TRIAL')}
+            style={{
+              padding: '12px 14px',
+              borderRadius: '12px',
+              border: 'none',
+              background: subscriptionType === 'TRIAL' ? 'var(--gradient-primary)' : 'transparent',
+              color: subscriptionType === 'TRIAL' ? '#ffffff' : 'var(--text-muted)',
+              fontWeight: 800,
+              fontSize: '0.92rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              transition: 'all 0.25s ease',
+              boxShadow: subscriptionType === 'TRIAL' ? '0 4px 14px rgba(59, 130, 246, 0.4)' : 'none',
+            }}
+          >
+            <Sparkles size={16} />
+            <span>{isRtl ? '30 ימי ניסיון חינם' : '30-Day Free Trial'}</span>
+          </button>
+
+          {/* Option B: Immediate Paid Subscription */}
+          <button
+            type="button"
+            onClick={() => setSubscriptionType('PAID')}
+            style={{
+              padding: '12px 14px',
+              borderRadius: '12px',
+              border: 'none',
+              background: subscriptionType === 'PAID' ? 'var(--gradient-primary)' : 'transparent',
+              color: subscriptionType === 'PAID' ? '#ffffff' : 'var(--text-muted)',
+              fontWeight: 800,
+              fontSize: '0.92rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              transition: 'all 0.25s ease',
+              boxShadow: subscriptionType === 'PAID' ? '0 4px 14px rgba(59, 130, 246, 0.4)' : 'none',
+            }}
+          >
+            <Zap size={16} />
+            <span>{isRtl ? 'מנוי משולם מיידי' : 'Immediate Paid'}</span>
+          </button>
+        </div>
+
+        {/* Secondary Controls: Monthly / Yearly Billing Toggle + Print Button */}
         <div
           style={{
             display: 'flex',
@@ -230,9 +320,9 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                   </div>
                 </div>
 
-                {/* Plan Action CTA */}
+                {/* Plan Action CTA with Trial / Paid labeling */}
                 <button
-                  onClick={onOpenDemoModal}
+                  onClick={() => handleSelectPlan(plan)}
                   className={plan.isPopular ? 'btn-primary' : 'btn-secondary'}
                   style={{
                     width: '100%',
@@ -241,7 +331,13 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                     fontSize: '1rem',
                   }}
                 >
-                  {plan.cta}
+                  {subscriptionType === 'TRIAL'
+                    ? isRtl
+                      ? 'התחל 30 ימי ניסיון חינם'
+                      : 'Start 30-Day Free Trial'
+                    : isRtl
+                    ? 'רכישת מנוי והפעלת גישה'
+                    : 'Buy Subscription Now'}
                 </button>
               </div>
             );

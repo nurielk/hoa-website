@@ -38,11 +38,19 @@ const AppPortalDashboard = React.lazy(() =>
 const NotFoundPage = React.lazy(() =>
   import('./components/NotFoundPage').then((m) => ({ default: m.NotFoundPage }))
 );
+const CheckoutModal = React.lazy(() =>
+  import('./components/CheckoutModal').then((m) => ({ default: m.CheckoutModal }))
+);
+import { PlanTier, SubscriptionType, BillingCycle } from './services/provisioningService';
 
 export const AppContent: React.FC = () => {
   const [lang, setLang] = useState<Language>('he');
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState<boolean>(false);
+  const [checkoutPlanTier, setCheckoutPlanTier] = useState<PlanTier>('PRO');
+  const [checkoutSubType, setCheckoutSubType] = useState<SubscriptionType>('TRIAL');
+  const [checkoutBillingCycle, setCheckoutBillingCycle] = useState<BillingCycle>('MONTHLY');
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [is404, setIs404] = useState<boolean>(false);
   const [userSession, setUserSession] = useState<{
@@ -133,6 +141,17 @@ export const AppContent: React.FC = () => {
     );
   }
 
+  const handleOpenCheckout = (
+    tier: PlanTier = 'PRO',
+    subType: SubscriptionType = 'TRIAL',
+    cycle: BillingCycle = 'MONTHLY'
+  ) => {
+    setCheckoutPlanTier(tier);
+    setCheckoutSubType(subType);
+    setCheckoutBillingCycle(cycle);
+    setIsCheckoutModalOpen(true);
+  };
+
   return (
     <div
       style={{
@@ -156,14 +175,14 @@ export const AppContent: React.FC = () => {
       {/* Feature 2: Slim Top Announcement Bar */}
       <TopAnnouncementBar
         lang={lang}
-        onOpenDemo={() => setIsDemoModalOpen(true)}
+        onOpenDemo={() => handleOpenCheckout('PRO', 'TRIAL', 'MONTHLY')}
       />
 
       {/* Navigation Header (Feature 1: Dark Mode, Feature 2: Slim Header, Feature 3: Mobile Menu, Feature 8: Search Trigger) */}
       <Navbar
         lang={lang}
         onLanguageToggle={toggleLanguage}
-        onOpenDemoModal={() => setIsDemoModalOpen(true)}
+        onOpenDemoModal={() => handleOpenCheckout('PRO', 'TRIAL', 'MONTHLY')}
         onOpenLoginModal={() => setIsLoginModalOpen(true)}
         onOpenSearch={() => setIsSearchOpen(true)}
         navItems={currentContent.nav}
@@ -176,7 +195,7 @@ export const AppContent: React.FC = () => {
         <HeroSection
           lang={lang}
           heroData={currentContent.hero}
-          onOpenDemoModal={() => setIsDemoModalOpen(true)}
+          onOpenDemoModal={() => handleOpenCheckout('PRO', 'TRIAL', 'MONTHLY')}
         />
 
         {/* 2. Complete Product Feature Grid ("כל מה שהבניין שלך צריך - במקום אחד") - Moved ABOVE StatsSection per user request */}
@@ -192,11 +211,12 @@ export const AppContent: React.FC = () => {
           onOpenDemoModal={() => setIsDemoModalOpen(true)}
         />
 
-        {/* 5. Transparent Tier Pricing & Plan Comparison (Feature 19: Print routine, Feature 22: Last updated badge) */}
+        {/* 5. Transparent Tier Pricing & Plan Comparison with 30-Day Free Trial & Immediate Paid options */}
         <PricingSection
           lang={lang}
           pricingData={currentContent.pricing}
           onOpenDemoModal={() => setIsDemoModalOpen(true)}
+          onOpenCheckoutModal={handleOpenCheckout}
         />
 
         {/* 6. Customer Reviews & Social Proof */}
@@ -245,6 +265,20 @@ export const AppContent: React.FC = () => {
             lang={lang}
             modalData={currentContent.modal}
             buttons={currentContent.buttons}
+          />
+        </Suspense>
+      )}
+
+      {/* Automated Checkout & User Provisioning Modal */}
+      {isCheckoutModalOpen && (
+        <Suspense fallback={null}>
+          <CheckoutModal
+            isOpen={isCheckoutModalOpen}
+            onClose={() => setIsCheckoutModalOpen(false)}
+            lang={lang}
+            initialPlanTier={checkoutPlanTier}
+            initialSubscriptionType={checkoutSubType}
+            initialBillingCycle={checkoutBillingCycle}
           />
         </Suspense>
       )}
