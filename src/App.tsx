@@ -66,13 +66,33 @@ export const AppContent: React.FC = () => {
     initUtmTracker();
   }, []);
 
-  // Check URL pathname for 404 detection
+  // Check URL pathname for onboarding token / dashboard direct access or 404 detection
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const building = urlParams.get('building');
+    const onboard = urlParams.get('onboard');
     const path = window.location.pathname;
+
+    // Seamless handoff: If redirected to /onboard or has token/building params, load dashboard directly
+    if (token || onboard || path.includes('/onboard') || path.includes('/dashboard')) {
+      const resolvedBuilding = building
+        ? (isRtl ? `בניין #${building}` : `Building #${building}`)
+        : (isRtl ? 'בניין מגורים חדש' : 'New Residential Building');
+      setUserSession({
+        userRole: 'vaad',
+        buildingName: resolvedBuilding,
+      });
+      // Replace URL without reload so browser history stays clean
+      window.history.replaceState(null, '', '/');
+      setIs404(false);
+      return;
+    }
+
     if (path !== '/' && path !== '' && path !== '/index.html') {
       setIs404(true);
     }
-  }, []);
+  }, [isRtl]);
 
   // Global Ctrl+K / Cmd+K search shortcut listener
   useEffect(() => {
@@ -279,6 +299,13 @@ export const AppContent: React.FC = () => {
             initialPlanTier={checkoutPlanTier}
             initialSubscriptionType={checkoutSubType}
             initialBillingCycle={checkoutBillingCycle}
+            onEnterDashboard={(role, buildingName) => {
+              setUserSession({
+                userRole: role,
+                buildingName: buildingName || (isRtl ? 'בניין מגורים חדש' : 'New Residential Building'),
+              });
+              setIsCheckoutModalOpen(false);
+            }}
           />
         </Suspense>
       )}

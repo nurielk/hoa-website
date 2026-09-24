@@ -30,6 +30,7 @@ interface CheckoutModalProps {
   initialPlanTier?: PlanTier;
   initialSubscriptionType?: SubscriptionType;
   initialBillingCycle?: BillingCycle;
+  onEnterDashboard?: (userRole: 'vaad', buildingName: string, accessCode?: string) => void;
 }
 
 export const CheckoutModal: React.FC<CheckoutModalProps> = ({
@@ -39,6 +40,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   initialPlanTier = 'PRO',
   initialSubscriptionType = 'TRIAL',
   initialBillingCycle = 'MONTHLY',
+  onEnterDashboard,
 }) => {
   const isRtl = lang === 'he';
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
@@ -990,8 +992,16 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
             {/* Direct CTA: Go to Building Dashboard */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <a
-                href={successResult.onboarding_url}
+              <button
+                type="button"
+                onClick={() => {
+                  if (onEnterDashboard) {
+                    onEnterDashboard('vaad', buildingName.trim() || 'בניין מגורים', successResult.building_access_code);
+                    onClose();
+                  } else if (successResult.onboarding_url) {
+                    window.location.href = successResult.onboarding_url;
+                  }
+                }}
                 className="btn-primary"
                 style={{
                   width: '100%',
@@ -999,15 +1009,41 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   padding: '16px 28px',
                   fontSize: '1.15rem',
                   fontWeight: 800,
-                  textDecoration: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
                   borderRadius: '14px',
                   background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
                   boxShadow: '0 8px 25px rgba(37, 99, 235, 0.4)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
                 }}
               >
                 <span>{isRtl ? '🚀 כניסה ישירה לדשבורד הבניין' : '🚀 Go to Building Dashboard'}</span>
-                <ExternalLink size={20} />
-              </a>
+                <ArrowIcon size={20} />
+              </button>
+
+              {/* External Cloud System Link (Optional) */}
+              {successResult.onboarding_url && successResult.onboarding_url.includes('dayarplus.knuriel.workers.dev') && (
+                <a
+                  href={successResult.onboarding_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    fontSize: '0.85rem',
+                    color: '#60a5fa',
+                    textDecoration: 'none',
+                    padding: '4px',
+                  }}
+                >
+                  <span>{isRtl ? 'פתיחת אשף הזמנת דיירים במערכת הענן (Cloudflare)' : 'Open tenant wizard in cloud system'}</span>
+                  <ExternalLink size={14} />
+                </a>
+              )}
 
               <button
                 type="button"

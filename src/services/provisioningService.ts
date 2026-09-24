@@ -89,7 +89,7 @@ export type ProvisioningResponse = ProvisioningSuccessResponse | ProvisioningErr
 // Environment Configurations
 const PROVISIONING_API_URL =
   import.meta.env.VITE_PROVISIONING_API_URL ||
-  'http://localhost:3000/api/v1/register-tenant';
+  'https://dayarplus.knuriel.workers.dev/api/v1/register-tenant';
 
 const PROVISIONING_API_KEY =
   import.meta.env.VITE_PROVISIONING_API_KEY ||
@@ -97,7 +97,9 @@ const PROVISIONING_API_KEY =
 
 const APP_BASE_URL =
   import.meta.env.VITE_APP_URL ||
-  'http://localhost:5173';
+  (typeof window !== 'undefined' && window.location.origin
+    ? window.location.origin
+    : 'https://dayarplus.knuriel.workers.dev');
 
 /**
  * 1. PCI-DSS Compliant Card Tokenization / Pre-Authorization
@@ -157,6 +159,11 @@ export async function provisionTenantInProjectB(
 
     if (!response.ok || !data.success) {
       throw new Error(data.error || `Provisioning failed with status: ${response.status}`);
+    }
+
+    // Normalize onboarding URL if remote server returns localhost:5173 while testing locally on another port
+    if (data.onboarding_url && data.onboarding_url.includes('localhost:5173')) {
+      data.onboarding_url = data.onboarding_url.replace('http://localhost:5173', APP_BASE_URL);
     }
 
     return data as ProvisioningSuccessResponse;
