@@ -25,4 +25,5 @@ export const FEATURES_CONFIG = {
   utmTracker: true,          // 20. מעקב UTM
   copyToClipboard: true,     // 21. העתקה ללוח עם טוסט
   lastUpdatedDates: true,    // 22. תאריכי עדכון אחרון
+  passwordToggle: true,      // 23. הצגה והסתרת סיסמה
 } as const;

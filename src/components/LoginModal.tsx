@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Language } from '../types';
-import { X, Lock, Phone, ArrowLeft, ArrowRight, ShieldCheck, Building2, CheckCircle2 } from 'lucide-react';
+import { X, Lock, Phone, ArrowLeft, ArrowRight, ShieldCheck, Building2, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -21,6 +21,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   const [role, setRole] = useState<'resident' | 'vaad' | 'management'>('vaad');
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState<'credentials' | 'otp'>('credentials');
   const [otpCode, setOtpCode] = useState('');
   const [loading, setLoading] = useState(false);
@@ -296,14 +297,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                   }}
                 />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   style={{
                     width: '100%',
                     padding: '12px 16px',
-                    paddingRight: isRtl ? '42px' : '16px',
-                    paddingLeft: isRtl ? '16px' : '42px',
+                    paddingRight: '42px',
+                    paddingLeft: '42px',
                     borderRadius: '10px',
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid rgba(255, 255, 255, 0.12)',
@@ -313,6 +314,29 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                   }}
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? (isRtl ? 'הסתר סיסמה' : 'Hide password') : (isRtl ? 'הצג סיסמה' : 'Show password')}
+                  title={showPassword ? (isRtl ? 'הסתר סיסמה' : 'Hide password') : (isRtl ? 'הצג סיסמה' : 'Show password')}
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    left: isRtl ? '12px' : 'auto',
+                    right: isRtl ? 'auto' : '12px',
+                    background: 'none',
+                    border: 'none',
+                    color: '#9ca3af',
+                    cursor: 'pointer',
+                    padding: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 

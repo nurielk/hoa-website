@@ -107,6 +107,11 @@ body {
   outline-offset: 2px;
 }
 
+[dir="ltr"] .skip-to-content {
+  right: auto;
+  left: 20px;
+}
+
 /* Scroll Progress Bar */
 .scroll-progress-bar {
   position: fixed;
