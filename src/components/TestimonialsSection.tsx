@@ -16,10 +16,10 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testim
       <div className="container">
         {/* Header */}
         <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 60px' }}>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, marginBottom: '16px' }}>
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, marginBottom: '16px', color: 'var(--text-main)' }}>
             {testimonialsData.title}
           </h2>
-          <p style={{ fontSize: '1.1rem', color: '#9ca3af' }}>{testimonialsData.subtitle}</p>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{testimonialsData.subtitle}</p>
         </div>
 
         {/* Testimonials Cards Grid */}
@@ -43,16 +43,17 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testim
                       <Star key={i} size={16} fill="#fbbf24" color="#fbbf24" />
                     ))}
                   </div>
-                  <Quote size={24} color="rgba(255, 255, 255, 0.15)" />
+                  <Quote size={24} color="var(--border-subtle)" />
                 </div>
 
                 <p
                   style={{
-                    fontSize: '1rem',
-                    color: '#e5e7eb',
+                    fontSize: '1.02rem',
+                    color: 'var(--text-main)',
                     lineHeight: 1.6,
                     fontStyle: 'italic',
                     marginBottom: '24px',
+                    fontWeight: 500,
                   }}
                 >
                   "{item.quote}"
@@ -66,7 +67,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testim
                   alignItems: 'center',
                   gap: '14px',
                   paddingTop: '16px',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderTop: '1px solid var(--border-subtle)',
                 }}
               >
                 <img
@@ -84,13 +85,13 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testim
                   }}
                 />
                 <div>
-                  <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '1rem' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1rem' }}>
                     {item.author}
                   </div>
-                  <div style={{ fontSize: '0.82rem', color: '#60a5fa', fontWeight: 600 }}>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--accent-blue)', fontWeight: 700 }}>
                     {item.role}
                   </div>
-                  <div style={{ fontSize: '0.78rem', color: '#9ca3af' }}>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
                     {item.building}, {item.city}
                   </div>
                 </div>

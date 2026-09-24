@@ -170,7 +170,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
         position: 'fixed',
         inset: 0,
         zIndex: 1000,
-        background: 'rgba(0, 0, 0, 0.75)',
+        background: 'rgba(0, 0, 0, 0.65)',
         backdropFilter: 'blur(10px)',
         display: 'flex',
         alignItems: 'center',
@@ -181,6 +181,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="contact-modal-title"
+      dir={isRtl ? 'rtl' : 'ltr'}
     >
       <div
         ref={modalRef}
@@ -190,10 +191,11 @@ export const ContactModal: React.FC<ContactModalProps> = ({
           maxWidth: '560px',
           padding: '36px',
           position: 'relative',
-          border: '1px solid rgba(59, 130, 246, 0.4)',
-          background: '#111827',
+          border: '1px solid var(--border-subtle)',
+          background: 'var(--bg-secondary)',
+          color: 'var(--text-main)',
           borderRadius: '24px',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.35)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -206,9 +208,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({
             top: '20px',
             left: isRtl ? '20px' : 'auto',
             right: isRtl ? 'auto' : '20px',
-            background: 'rgba(255, 255, 255, 0.08)',
-            border: 'none',
-            color: '#ffffff',
+            background: 'var(--bg-glass)',
+            border: '1px solid var(--border-subtle)',
+            color: 'var(--text-main)',
             width: '36px',
             height: '36px',
             borderRadius: '50%',
@@ -228,10 +230,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 <Sparkles size={14} />
                 <span>{lang === 'he' ? 'הדגמה ללא התחייבות' : 'Free Demo Account'}</span>
               </div>
-              <h3 id="contact-modal-title" style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px' }}>
+              <h3 id="contact-modal-title" style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '8px' }}>
                 {modalData.title}
               </h3>
-              <p style={{ fontSize: '0.95rem', color: '#9ca3af' }}>{modalData.subtitle}</p>
+              <p style={{ fontSize: '0.98rem', color: 'var(--text-muted)' }}>{modalData.subtitle}</p>
             </div>
 
             {errorMsg && (
@@ -244,9 +246,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                   border: '1px solid rgba(239, 68, 68, 0.4)',
                   padding: '10px 14px',
                   borderRadius: '8px',
-                  color: '#f87171',
+                  color: '#ef4444',
                   fontSize: '0.88rem',
                   marginBottom: '16px',
+                  fontWeight: 600,
                 }}
               >
                 <AlertCircle size={18} />
@@ -257,7 +260,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {/* Name */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: '#d1d5db', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                   {modalData.nameLabel}
                 </label>
                 <input
@@ -271,9 +274,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                     width: '100%',
                     padding: '12px 16px',
                     borderRadius: '10px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    color: '#ffffff',
+                    background: 'var(--bg-glass)',
+                    border: '1px solid var(--border-subtle)',
+                    color: 'var(--text-main)',
                     fontSize: '0.95rem',
                     outline: 'none',
                   }}
@@ -284,7 +287,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
               {/* Phone & Email Grid */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: '#d1d5db', marginBottom: '6px' }}>
+                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                     {modalData.phoneLabel}
                   </label>
                   <input
@@ -297,9 +300,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                       width: '100%',
                       padding: '12px 16px',
                       borderRadius: '10px',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.12)',
-                      color: '#ffffff',
+                      background: 'var(--bg-glass)',
+                      border: '1px solid var(--border-subtle)',
+                      color: 'var(--text-main)',
                       fontSize: '0.95rem',
                       outline: 'none',
                     }}
@@ -308,7 +311,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: '#d1d5db', marginBottom: '6px' }}>
+                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                     {modalData.emailLabel}
                   </label>
                   <input
@@ -321,9 +324,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                       width: '100%',
                       padding: '12px 16px',
                       borderRadius: '10px',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.12)',
-                      color: '#ffffff',
+                      background: 'var(--bg-glass)',
+                      border: '1px solid var(--border-subtle)',
+                      color: 'var(--text-main)',
                       fontSize: '0.95rem',
                       outline: 'none',
                     }}
@@ -335,7 +338,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
               {/* Role Select & Apartment Count */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: '#d1d5db', marginBottom: '6px' }}>
+                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                     {modalData.roleLabel}
                   </label>
                   <select
@@ -345,9 +348,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                       width: '100%',
                       padding: '12px 16px',
                       borderRadius: '10px',
-                      background: '#1f2937',
-                      border: '1px solid rgba(255, 255, 255, 0.12)',
-                      color: '#ffffff',
+                      background: 'var(--bg-secondary)',
+                      border: '1px solid var(--border-subtle)',
+                      color: 'var(--text-main)',
                       fontSize: '0.95rem',
                       outline: 'none',
                     }}
@@ -359,7 +362,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: '#d1d5db', marginBottom: '6px' }}>
+                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                     {modalData.apartmentsLabel}
                   </label>
                   <input
@@ -372,9 +375,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                       width: '100%',
                       padding: '12px 16px',
                       borderRadius: '10px',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.12)',
-                      color: '#ffffff',
+                      background: 'var(--bg-glass)',
+                      border: '1px solid var(--border-subtle)',
+                      color: 'var(--text-main)',
                       fontSize: '0.95rem',
                       outline: 'none',
                     }}
@@ -392,6 +395,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                   marginTop: '10px',
                   opacity: isLoading ? 0.75 : 1,
                   cursor: isLoading ? 'not-allowed' : 'pointer',
+                  padding: '13px',
+                  fontSize: '1.05rem',
                 }}
               >
                 {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
@@ -413,14 +418,14 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 margin: '0 auto 16px',
               }}
             >
-              <CheckCircle size={36} color="#34d399" />
+              <CheckCircle size={36} color="#10b981" />
             </div>
 
-            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px' }}>
+            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '8px' }}>
               {lang === 'he' ? 'הפנייה נשלחה ונקלטה בהצלחה!' : 'Request Sent Successfully!'}
             </h3>
 
-            <p style={{ fontSize: '0.95rem', color: '#9ca3af', marginBottom: '16px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '16px', lineHeight: 1.5 }}>
               {modalData.successMsg}
             </p>
 
@@ -433,9 +438,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                   gap: '6px',
                   padding: '6px 14px',
                   borderRadius: '20px',
-                  background: 'rgba(59, 130, 246, 0.15)',
+                  background: 'rgba(59, 130, 246, 0.12)',
                   border: '1px solid rgba(59, 130, 246, 0.3)',
-                  color: '#93c5fd',
+                  color: '#2563eb',
                   fontSize: '0.85rem',
                   fontWeight: 700,
                   marginBottom: '20px',
@@ -482,9 +487,14 @@ export const ContactModal: React.FC<ContactModalProps> = ({
             <button
               onClick={handleClose}
               className="btn-secondary"
-              style={{ width: '100%', justifyContent: 'center' }}
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                padding: '12px',
+                fontSize: '0.95rem',
+              }}
             >
-              {buttons.close}
+              <span>{buttons.close}</span>
             </button>
           </div>
         )}

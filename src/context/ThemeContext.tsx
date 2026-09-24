@@ -17,10 +17,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
       if (saved === 'dark' || saved === 'light') return saved;
-      // Default to dark mode as DayarPlus is a sleek modern dark app
-      return 'dark';
+      return 'light'; // Default to light mode as requested
     }
-    return 'dark';
+    return 'light';
   });
 
   useEffect(() => {

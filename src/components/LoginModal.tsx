@@ -94,24 +94,26 @@ export const LoginModal: React.FC<LoginModalProps> = ({
           maxWidth: '480px',
           padding: '36px',
           position: 'relative',
-          border: '1px solid rgba(59, 130, 246, 0.4)',
-          background: '#111827',
+          border: '1px solid var(--border-subtle)',
+          background: 'var(--bg-secondary)',
+          color: 'var(--text-main)',
           borderRadius: '24px',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.35)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
+          aria-label={isRtl ? 'סגור חלון' : 'Close modal'}
           style={{
             position: 'absolute',
             top: '20px',
             left: isRtl ? '20px' : 'auto',
             right: isRtl ? 'auto' : '20px',
-            background: 'rgba(255, 255, 255, 0.08)',
-            border: 'none',
-            color: '#ffffff',
+            background: 'var(--bg-glass)',
+            border: '1px solid var(--border-subtle)',
+            color: 'var(--text-main)',
             width: '36px',
             height: '36px',
             borderRadius: '50%',
@@ -135,7 +137,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               borderRadius: '20px',
               background: 'rgba(59, 130, 246, 0.15)',
               border: '1px solid rgba(59, 130, 246, 0.3)',
-              color: '#60a5fa',
+              color: '#3b82f6',
               fontSize: '0.82rem',
               fontWeight: 700,
               marginBottom: '14px',
@@ -145,10 +147,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             <span>{isRtl ? 'כניסה מאובטחת למערכת' : 'Secure System Login'}</span>
           </div>
 
-          <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '6px' }}>
+          <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '6px' }}>
             {isRtl ? 'התחברות לאפליקציית DayarPlus' : 'Login to DayarPlus App'}
           </h3>
-          <p style={{ fontSize: '0.9rem', color: '#9ca3af' }}>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
             {isRtl
               ? 'הזן את פרטי הגישה שלך לכניסה ישירה לדשבורד הבניין'
               : 'Enter your credentials to access your building dashboard directly'}
@@ -159,11 +161,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         <div
           style={{
             display: 'flex',
-            background: 'rgba(0, 0, 0, 0.4)',
+            background: 'var(--bg-glass)',
             padding: '4px',
             borderRadius: '12px',
             marginBottom: '24px',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            border: '1px solid var(--border-subtle)',
           }}
         >
           <button
@@ -175,7 +177,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               borderRadius: '8px',
               border: 'none',
               background: role === 'vaad' ? 'var(--accent-blue)' : 'transparent',
-              color: '#ffffff',
+              color: role === 'vaad' ? '#ffffff' : 'var(--text-muted)',
               fontWeight: 700,
               fontSize: '0.85rem',
               cursor: 'pointer',
@@ -194,7 +196,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               borderRadius: '8px',
               border: 'none',
               background: role === 'resident' ? 'var(--accent-blue)' : 'transparent',
-              color: '#ffffff',
+              color: role === 'resident' ? '#ffffff' : 'var(--text-muted)',
               fontWeight: 700,
               fontSize: '0.85rem',
               cursor: 'pointer',
@@ -213,7 +215,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               borderRadius: '8px',
               border: 'none',
               background: role === 'management' ? 'var(--accent-blue)' : 'transparent',
-              color: '#ffffff',
+              color: role === 'management' ? '#ffffff' : 'var(--text-muted)',
               fontWeight: 700,
               fontSize: '0.85rem',
               cursor: 'pointer',
@@ -231,7 +233,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               background: 'rgba(239, 68, 68, 0.15)',
               border: '1px solid rgba(239, 68, 68, 0.3)',
               borderRadius: '10px',
-              color: '#fca5a5',
+              color: '#ef4444',
               fontSize: '0.88rem',
               marginBottom: '16px',
             }}
@@ -243,7 +245,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         {step === 'credentials' ? (
           <form onSubmit={handleCredentialsSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: '#d1d5db', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                 {isRtl ? 'מספר טלפון / נייד:' : 'Phone Number or Email:'}
               </label>
               <div style={{ position: 'relative' }}>
@@ -255,7 +257,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     transform: 'translateY(-50%)',
                     right: isRtl ? '14px' : 'auto',
                     left: isRtl ? 'auto' : '14px',
-                    color: '#9ca3af',
+                    color: 'var(--text-muted)',
                   }}
                 />
                 <input
@@ -269,9 +271,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     paddingRight: isRtl ? '42px' : '16px',
                     paddingLeft: isRtl ? '16px' : '42px',
                     borderRadius: '10px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    color: '#ffffff',
+                    background: 'var(--bg-glass)',
+                    border: '1px solid var(--border-subtle)',
+                    color: 'var(--text-main)',
                     fontSize: '0.95rem',
                     outline: 'none',
                   }}
@@ -281,7 +283,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: '#d1d5db', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                 {isRtl ? 'סיסמה / קוד דירה:' : 'Password or Unit Pin:'}
               </label>
               <div style={{ position: 'relative' }}>
@@ -293,7 +295,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     transform: 'translateY(-50%)',
                     right: isRtl ? '14px' : 'auto',
                     left: isRtl ? 'auto' : '14px',
-                    color: '#9ca3af',
+                    color: 'var(--text-muted)',
                   }}
                 />
                 <input
@@ -306,9 +308,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     paddingRight: '42px',
                     paddingLeft: '42px',
                     borderRadius: '10px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    color: '#ffffff',
+                    background: 'var(--bg-glass)',
+                    border: '1px solid var(--border-subtle)',
+                    color: 'var(--text-main)',
                     fontSize: '0.95rem',
                     outline: 'none',
                   }}
@@ -327,7 +329,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     right: isRtl ? 'auto' : '12px',
                     background: 'none',
                     border: 'none',
-                    color: '#9ca3af',
+                    color: 'var(--text-muted)',
                     cursor: 'pointer',
                     padding: '4px',
                     display: 'flex',
@@ -358,7 +360,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 }}
                 style={{
                   fontSize: '0.82rem',
-                  color: '#60a5fa',
+                  color: '#3b82f6',
                   cursor: 'pointer',
                   textDecoration: 'underline',
                 }}
@@ -370,15 +372,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         ) : (
           <form onSubmit={handleOtpSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-              <div style={{ fontSize: '0.9rem', color: '#34d399', fontWeight: 600, marginBottom: '4px' }}>
+              <div style={{ fontSize: '0.9rem', color: '#10b981', fontWeight: 600, marginBottom: '4px' }}>
                 <CheckCircle2 size={20} style={{ verticalAlign: 'middle', marginInlineEnd: '6px' }} />
                 {isRtl ? 'קוד אימות נשלח ב-SMS' : 'Verification code sent via SMS'}
               </div>
-              <div style={{ fontSize: '0.85rem', color: '#9ca3af' }}>{identifier}</div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{identifier}</div>
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: '#d1d5db', marginBottom: '6px', textAlign: 'center' }}>
+              <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px', textAlign: 'center' }}>
                 {isRtl ? 'הזן קוד חד-פעמי (SMS):' : 'Enter 4-digit SMS OTP Code:'}
               </label>
               <input
@@ -391,9 +393,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                   width: '100%',
                   padding: '14px',
                   borderRadius: '12px',
-                  background: 'rgba(255, 255, 255, 0.08)',
+                  background: 'var(--bg-glass)',
                   border: '1px solid rgba(59, 130, 246, 0.5)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   fontSize: '1.4rem',
                   fontWeight: 800,
                   letterSpacing: '0.4em',
@@ -403,7 +405,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 placeholder="1234"
               />
               <div style={{ textAlign: 'center', marginTop: '6px' }}>
-                <span style={{ fontSize: '0.82rem', color: '#60a5fa', fontWeight: 600 }}>
+                <span style={{ fontSize: '0.82rem', color: '#3b82f6', fontWeight: 600 }}>
                   {isRtl ? '💡 מצב דמו: הקוד 1234 מולא אוטומטית (לחץ כניסה למעבר לפורטל)' : '💡 Demo mode: Code 1234 pre-filled (click Enter to proceed)'}
                 </span>
               </div>
@@ -425,7 +427,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#9ca3af',
+                color: 'var(--text-muted)',
                 fontSize: '0.85rem',
                 cursor: 'pointer',
                 textAlign: 'center',

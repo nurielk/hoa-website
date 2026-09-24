@@ -118,23 +118,57 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </a>
           </div>
 
-          {/* Highlights List Banner */}
+          {/* Highlights List Banner - High Prominence & Large Font */}
           <div
             className="glass-panel"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-              gap: '16px',
-              padding: '18px 24px',
-              borderRadius: '16px',
-              background: 'var(--bg-glass)',
-              border: '1px solid var(--border-subtle)',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '18px',
+              padding: '26px 32px',
+              borderRadius: '22px',
+              background: 'var(--bg-card)',
+              border: '1.5px solid rgba(59, 130, 246, 0.4)',
+              boxShadow: '0 14px 40px -10px rgba(59, 130, 246, 0.2)',
             }}
           >
             {heroData.highlights.map((item, idx) => (
-              <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                <CheckCircle2 size={18} color="#34d399" />
-                <span style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 600 }}>
+              <div
+                key={idx}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '14px',
+                  padding: '12px 18px',
+                  borderRadius: '14px',
+                  background: 'var(--bg-glass)',
+                  border: '1px solid var(--border-subtle)',
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
+                }}
+              >
+                <div
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '50%',
+                    background: 'rgba(16, 185, 129, 0.18)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <CheckCircle2 size={22} color="#10b981" />
+                </div>
+                <span
+                  style={{
+                    fontSize: 'clamp(1.15rem, 1.4vw, 1.35rem)',
+                    color: 'var(--text-main)',
+                    fontWeight: 800,
+                    letterSpacing: '-0.01em',
+                  }}
+                >
                   {item}
                 </span>
               </div>

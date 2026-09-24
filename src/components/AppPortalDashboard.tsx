@@ -73,8 +73,8 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
     <div
       style={{
         minHeight: '100vh',
-        background: '#0b0f19',
-        color: '#ffffff',
+        background: 'var(--bg-primary)',
+        color: 'var(--text-main)',
         paddingBottom: '80px',
       }}
       dir={isRtl ? 'rtl' : 'ltr'}
@@ -82,8 +82,8 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
       {/* Top Header Bar */}
       <header
         style={{
-          background: 'rgba(17, 24, 39, 0.9)',
-          borderBottom: '1px solid rgba(59, 130, 246, 0.2)',
+          background: 'var(--bg-secondary)',
+          borderBottom: '1px solid var(--border-subtle)',
           padding: '16px 24px',
           position: 'sticky',
           top: 0,
@@ -177,9 +177,9 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
                   gap: '8px',
                   padding: '8px 16px',
                   borderRadius: '10px',
-                  border: isActive ? '1px solid rgba(59, 130, 246, 0.6)' : '1px solid rgba(255, 255, 255, 0.08)',
-                  background: isActive ? 'rgba(59, 130, 246, 0.2)' : 'rgba(255, 255, 255, 0.03)',
-                  color: isActive ? '#60a5fa' : '#9ca3af',
+                  border: isActive ? '1px solid rgba(59, 130, 246, 0.6)' : '1px solid var(--border-subtle)',
+                  background: isActive ? 'rgba(59, 130, 246, 0.15)' : 'var(--bg-glass)',
+                  color: isActive ? '#2563eb' : 'var(--text-muted)',
                   fontSize: '0.88rem',
                   fontWeight: 600,
                   cursor: 'pointer',
@@ -201,8 +201,8 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
         <div
           style={{
             padding: '16px 20px',
-            background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%)',
-            border: '1px solid rgba(59, 130, 246, 0.3)',
+            background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%)',
+            border: '1px solid rgba(59, 130, 246, 0.25)',
             borderRadius: '16px',
             marginBottom: '28px',
             display: 'flex',
@@ -213,12 +213,12 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <ShieldCheck size={24} color="#34d399" />
+            <ShieldCheck size={24} color="#10b981" />
             <div>
-              <div style={{ fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+              <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>
                 {isRtl ? 'ברוך הבא לפורטל הניהול הישיר של הבניין!' : 'Welcome to Your Direct Building Portal!'}
               </div>
-              <div style={{ fontSize: '0.85rem', color: '#9ca3af' }}>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                 {isRtl
                   ? 'אתה מחובר כעת ישירות למערכת DayarPlus. כל הנתונים, הגבייה והתקלות מסונכרנים בזמן אמת.'
                   : 'You are directly connected into the live DayarPlus system. All dues, issues, and voting are synced.'}
@@ -240,10 +240,10 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
             {/* Card 1: Dues */}
             <div className="glass-panel" style={{ padding: '20px', borderRadius: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                <span style={{ fontSize: '0.85rem', color: '#9ca3af' }}>{isRtl ? 'סטטוס תשלום ועד חודשי' : 'Monthly Dues Status'}</span>
-                <CreditCard size={20} color="#60a5fa" />
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{isRtl ? 'סטטוס תשלום ועד חודשי' : 'Monthly Dues Status'}</span>
+                <CreditCard size={20} color="#3b82f6" />
               </div>
-              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: duesPaid ? '#34d399' : '#fbbf24', marginBottom: '4px' }}>
+              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: duesPaid ? '#10b981' : '#f59e0b', marginBottom: '4px' }}>
                 {duesPaid ? (isRtl ? 'שולם בהצלחה (₪450)' : 'Paid ($150)') : (isRtl ? 'ממתין לתשלום (₪450)' : 'Pending ($150)')}
               </div>
               {!duesPaid ? (
@@ -255,7 +255,7 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
                   <span>{isRtl ? 'שלם עכשיו באשראי / ביט' : 'Pay Now via Credit/Bit'}</span>
                 </button>
               ) : (
-                <span style={{ fontSize: '0.78rem', color: '#34d399', fontWeight: 600, display: 'block', marginTop: '8px' }}>
+                <span style={{ fontSize: '0.78rem', color: '#10b981', fontWeight: 600, display: 'block', marginTop: '8px' }}>
                   ✓ {isRtl ? 'קבלה 2026-9988 נשלחה לנייד' : 'Receipt #2026-9988 issued'}
                 </span>
               )}
@@ -264,13 +264,13 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
             {/* Card 2: Tickets */}
             <div className="glass-panel" style={{ padding: '20px', borderRadius: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                <span style={{ fontSize: '0.85rem', color: '#9ca3af' }}>{isRtl ? 'תקלות פתוחות בבניין' : 'Open Building Tickets'}</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{isRtl ? 'תקלות פתוחות בבניין' : 'Open Building Tickets'}</span>
                 <Wrench size={20} color="#f59e0b" />
               </div>
-              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', marginBottom: '4px' }}>
+              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '4px' }}>
                 {tickets.length} {isRtl ? 'קריאות פעילות' : 'Active Tickets'}
               </div>
-              <span style={{ fontSize: '0.8rem', color: '#9ca3af' }}>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 {isRtl ? 'ספק מעליות בדרך למתחם' : 'Vendor assigned'}
               </span>
             </div>
@@ -278,13 +278,13 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
             {/* Card 3: Polls */}
             <div className="glass-panel" style={{ padding: '20px', borderRadius: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                <span style={{ fontSize: '0.85rem', color: '#9ca3af' }}>{isRtl ? 'הצבעה פעילה לבניין' : 'Active Building Poll'}</span>
-                <Vote size={20} color="#a855f7" />
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{isRtl ? 'הצבעה פעילה לבניין' : 'Active Building Poll'}</span>
+                <Vote size={20} color="#8b5cf6" />
               </div>
-              <div style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', marginBottom: '4px' }}>
+              <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '4px' }}>
                 {isRtl ? 'עמדות טעינה לרכב חשמלי' : 'EV Charging Station Installation'}
               </div>
-              <span style={{ fontSize: '0.8rem', color: '#34d399' }}>
+              <span style={{ fontSize: '0.8rem', color: '#10b981' }}>
                 {selectedVote ? (isRtl ? '✓ הצבעתך נקלטה במערכת' : '✓ Vote Recorded') : (isRtl ? 'טרם הצבעת (נותרו 2 ימים)' : 'Voting Open')}
               </span>
             </div>
@@ -327,7 +327,7 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
                     border: '1px solid rgba(59, 130, 246, 0.3)',
                   }}
                 >
-                  <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, marginBottom: '6px' }}>
+                  <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
                     {isRtl ? 'תיאור התקלה / הבעיה:' : 'Issue Description:'}
                   </label>
                   <input
@@ -340,9 +340,9 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
                       width: '100%',
                       padding: '10px 14px',
                       borderRadius: '8px',
-                      background: 'rgba(255, 255, 255, 0.06)',
-                      border: '1px solid rgba(255, 255, 255, 0.15)',
-                      color: '#fff',
+                      background: 'var(--bg-glass)',
+                      border: '1px solid var(--border-subtle)',
+                      color: 'var(--text-main)',
                       marginBottom: '12px',
                       outline: 'none',
                     }}
@@ -371,25 +371,25 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
                     style={{
                       padding: '14px 18px',
                       borderRadius: '12px',
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                      background: 'var(--bg-glass)',
+                      border: '1px solid var(--border-subtle)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}
                   >
                     <div>
-                      <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#ffffff', marginBottom: '4px' }}>
+                      <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)', marginBottom: '4px' }}>
                         {t.title}
                       </div>
-                      <div style={{ fontSize: '0.78rem', color: '#9ca3af' }}>{t.date}</div>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{t.date}</div>
                     </div>
                     <span
                       style={{
                         padding: '4px 10px',
                         borderRadius: '12px',
                         background: 'rgba(245, 158, 11, 0.15)',
-                        color: '#fbbf24',
+                        color: '#f59e0b',
                         fontSize: '0.78rem',
                         fontWeight: 700,
                       }}
@@ -408,13 +408,13 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
           <div style={{ marginBottom: '32px' }}>
             <div className="glass-panel" style={{ padding: '24px', borderRadius: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-                <Vote size={22} color="#a855f7" />
-                <h2 style={{ fontSize: '1.2rem', fontWeight: 800 }}>
+                <Vote size={22} color="#8b5cf6" />
+                <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   {isRtl ? 'הצבעת דיירים פעילה' : 'Active Digital Poll'}
                 </h2>
               </div>
 
-              <p style={{ fontSize: '0.95rem', color: '#d1d5db', marginBottom: '20px' }}>
+              <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', marginBottom: '20px' }}>
                 {isRtl
                   ? 'האם לאשר התקנת תשתית טעינה לרכבים חשמליים בחניון התת-קרקעי (עלות מוערכת ₪15,000 מקופת הבניין)?'
                   : 'Approve EV charging station infrastructure deployment in the underground parking lot?'}
@@ -456,7 +456,7 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
         {(activeTab === 'reports') && (
           <div className="glass-panel" style={{ padding: '24px', borderRadius: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 800 }}>
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>
                 {isRtl ? 'דוחות כספיים ומאזן שנתי' : 'Financial Ledger & P&L Reports'}
               </h2>
               <button className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
@@ -468,7 +468,7 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', color: '#9ca3af' }}>
+                  <tr style={{ borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-muted)' }}>
                     <th style={{ padding: '12px', textAlign: isRtl ? 'right' : 'left' }}>{isRtl ? 'חודש' : 'Month'}</th>
                     <th style={{ padding: '12px', textAlign: isRtl ? 'right' : 'left' }}>{isRtl ? 'הכנסות גבייה' : 'Collection'}</th>
                     <th style={{ padding: '12px', textAlign: isRtl ? 'right' : 'left' }}>{isRtl ? 'הוצאות ואחזקה' : 'Expenses'}</th>
@@ -481,10 +481,10 @@ export const AppPortalDashboard: React.FC<AppPortalDashboardProps> = ({
                     { month: 'יוני 2026', income: '₪14,400', expense: '₪6,100', balance: '₪36,000' },
                     { month: 'מאי 2026', income: '₪14,400', expense: '₪11,300', balance: '₪27,700' },
                   ].map((row, idx) => (
-                    <tr key={idx} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                    <tr key={idx} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                       <td style={{ padding: '12px', fontWeight: 600 }}>{row.month}</td>
-                      <td style={{ padding: '12px', color: '#34d399' }}>{row.income}</td>
-                      <td style={{ padding: '12px', color: '#f87171' }}>{row.expense}</td>
+                      <td style={{ padding: '12px', color: '#10b981' }}>{row.income}</td>
+                      <td style={{ padding: '12px', color: '#ef4444' }}>{row.expense}</td>
                       <td style={{ padding: '12px', fontWeight: 700 }}>{row.balance}</td>
                     </tr>
                   ))}

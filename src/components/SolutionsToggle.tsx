@@ -40,7 +40,7 @@ export const SolutionsToggle: React.FC<SolutionsToggleProps> = ({
           >
             {solutionsData.title}
           </h2>
-          <p style={{ fontSize: '1.1rem', color: '#9ca3af' }}>{solutionsData.subtitle}</p>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{solutionsData.subtitle}</p>
         </div>
 
         {/* Tab Switchers */}
@@ -60,16 +60,16 @@ export const SolutionsToggle: React.FC<SolutionsToggleProps> = ({
               gap: '10px',
               padding: '14px 28px',
               borderRadius: '16px',
-              border: activeAudience === 'vaad' ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.1)',
-              background: activeAudience === 'vaad' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(255,255,255,0.03)',
-              color: activeAudience === 'vaad' ? '#ffffff' : '#9ca3af',
+              border: activeAudience === 'vaad' ? '2px solid #3b82f6' : '1px solid var(--border-subtle)',
+              background: activeAudience === 'vaad' ? 'rgba(59, 130, 246, 0.15)' : 'var(--bg-glass)',
+              color: activeAudience === 'vaad' ? '#2563eb' : 'var(--text-muted)',
               fontWeight: 700,
               fontSize: '1.05rem',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
             }}
           >
-            <Building2 size={22} color={activeAudience === 'vaad' ? '#60a5fa' : '#9ca3af'} />
+            <Building2 size={22} color={activeAudience === 'vaad' ? '#3b82f6' : 'var(--text-muted)'} />
             <span>{solutionsData.tabVaad}</span>
           </button>
 
@@ -81,16 +81,16 @@ export const SolutionsToggle: React.FC<SolutionsToggleProps> = ({
               gap: '10px',
               padding: '14px 28px',
               borderRadius: '16px',
-              border: activeAudience === 'management' ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.1)',
-              background: activeAudience === 'management' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(255,255,255,0.03)',
-              color: activeAudience === 'management' ? '#ffffff' : '#9ca3af',
+              border: activeAudience === 'management' ? '2px solid #3b82f6' : '1px solid var(--border-subtle)',
+              background: activeAudience === 'management' ? 'rgba(59, 130, 246, 0.15)' : 'var(--bg-glass)',
+              color: activeAudience === 'management' ? '#2563eb' : 'var(--text-muted)',
               fontWeight: 700,
               fontSize: '1.05rem',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
             }}
           >
-            <Building size={22} color={activeAudience === 'management' ? '#60a5fa' : '#9ca3af'} />
+            <Building size={22} color={activeAudience === 'management' ? '#3b82f6' : 'var(--text-muted)'} />
             <span>{solutionsData.tabManagement}</span>
           </button>
         </div>
@@ -117,7 +117,7 @@ export const SolutionsToggle: React.FC<SolutionsToggleProps> = ({
                   fontSize: '1.8rem',
                   fontWeight: 800,
                   marginBottom: '14px',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                 }}
               >
                 {currentAudience.title}
@@ -126,7 +126,7 @@ export const SolutionsToggle: React.FC<SolutionsToggleProps> = ({
               <p
                 style={{
                   fontSize: '1.05rem',
-                  color: '#9ca3af',
+                  color: 'var(--text-muted)',
                   marginBottom: '28px',
                   lineHeight: 1.6,
                 }}
@@ -150,9 +150,9 @@ export const SolutionsToggle: React.FC<SolutionsToggleProps> = ({
                     alignItems: 'flex-start',
                     gap: '14px',
                     padding: '14px 18px',
-                    background: 'rgba(255, 255, 255, 0.03)',
+                    background: 'var(--bg-glass)',
                     borderRadius: '12px',
-                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                    border: '1px solid var(--border-subtle)',
                   }}
                 >
                   <div
@@ -167,9 +167,9 @@ export const SolutionsToggle: React.FC<SolutionsToggleProps> = ({
                       flexShrink: 0,
                     }}
                   >
-                    <CheckCircle size={18} color="#34d399" />
+                    <CheckCircle size={18} color="#10b981" />
                   </div>
-                  <span style={{ fontSize: '0.98rem', color: '#e5e7eb', fontWeight: 600 }}>
+                  <span style={{ fontSize: '0.98rem', color: 'var(--text-main)', fontWeight: 600 }}>
                     {highlight}
                   </span>
                 </div>

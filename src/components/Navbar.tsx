@@ -56,19 +56,30 @@ export const Navbar: React.FC<NavbarProps> = ({
         zIndex: 100,
         background: scrolled
           ? theme === 'dark'
-            ? 'rgba(7, 10, 18, 0.92)'
-            : 'rgba(255, 255, 255, 0.92)'
+            ? 'rgba(7, 10, 18, 0.94)'
+            : 'rgba(255, 255, 255, 0.95)'
           : 'transparent',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderBottom: scrolled ? '1px solid var(--border-subtle)' : '1px solid transparent',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         padding: scrolled ? '8px 0' : '16px 0',
-        boxShadow: scrolled ? '0 10px 30px rgba(0,0,0,0.1)' : 'none',
+        boxShadow: scrolled ? '0 10px 30px rgba(0,0,0,0.06)' : 'none',
       }}
     >
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* Brand Logo */}
+      <div
+        style={{
+          maxWidth: '1440px',
+          width: '100%',
+          margin: '0 auto',
+          padding: '0 28px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '24px',
+        }}
+      >
+        {/* Brand Logo - clean without wrapping subtitle */}
         <a
           href="/"
           style={{
@@ -77,47 +88,49 @@ export const Navbar: React.FC<NavbarProps> = ({
             gap: '12px',
             textDecoration: 'none',
             color: 'var(--text-main)',
+            flexShrink: 0,
+            whiteSpace: 'nowrap',
           }}
         >
           <div
             style={{
-              width: scrolled ? '36px' : '42px',
-              height: scrolled ? '36px' : '42px',
+              width: scrolled ? '38px' : '44px',
+              height: scrolled ? '38px' : '44px',
               borderRadius: '12px',
               background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 14px rgba(59, 130, 246, 0.4)',
+              boxShadow: '0 4px 14px rgba(59, 130, 246, 0.35)',
               transition: 'all 0.3s ease',
+              flexShrink: 0,
             }}
           >
-            <Building2 size={scrolled ? 20 : 24} color="#ffffff" />
+            <Building2 size={scrolled ? 22 : 25} color="#ffffff" />
           </div>
           <div>
-            <span style={{ fontSize: scrolled ? '1.25rem' : '1.4rem', fontWeight: 800, letterSpacing: '-0.02em', transition: 'font-size 0.3s ease' }}>
-              DayarPlus<span style={{ color: '#3b82f6' }}>.SYSTEM</span>
-            </span>
             <span
               style={{
-                display: 'block',
-                fontSize: '0.68rem',
-                color: 'var(--text-muted)',
-                letterSpacing: '0.05em',
-                fontWeight: 600,
+                fontSize: scrolled ? '1.35rem' : '1.5rem',
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
+                transition: 'font-size 0.3s ease',
+                display: 'inline-block',
+                lineHeight: 1.2,
               }}
             >
-              {lang === 'he' ? 'בלינק בניהול הבניין' : 'BUILDING OPERATING SYSTEM'}
+              DayarPlus<span style={{ color: '#3b82f6' }}>.SYSTEM</span>
             </span>
           </div>
         </a>
 
-        {/* Desktop Nav Links */}
+        {/* Desktop Nav Links - with generous spacing and no line wrap */}
         <nav
           style={{
             display: 'none',
             alignItems: 'center',
-            gap: '24px',
+            gap: '36px',
+            flexWrap: 'nowrap',
           }}
           className="desktop-nav"
         >
@@ -128,11 +141,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               style={{
                 color: 'var(--text-muted)',
                 textDecoration: 'none',
-                fontSize: '0.92rem',
-                fontWeight: 600,
+                fontSize: '1rem',
+                fontWeight: 700,
                 transition: 'color 0.2s ease, transform 0.2s ease',
                 position: 'relative',
                 padding: '4px 0',
+                whiteSpace: 'nowrap',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = '#3b82f6';
@@ -149,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </nav>
 
         {/* Action Controls & Utilities */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0, whiteSpace: 'nowrap' }}>
           {/* Feature 8: Quick Search Button */}
           {onOpenSearch && (
             <button
@@ -158,8 +172,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               aria-label={isRtl ? 'חיפוש מהיר באתר (Ctrl+K)' : 'Search (Ctrl+K)'}
               title={isRtl ? 'חיפוש מהיר באתר (Ctrl+K)' : 'Search (Ctrl+K)'}
               style={{
-                padding: '8px 12px',
-                fontSize: '0.85rem',
+                padding: '9px 12px',
+                fontSize: '0.9rem',
                 borderRadius: '10px',
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -188,14 +202,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             title={theme === 'dark' ? (isRtl ? 'מצב בהיר' : 'Light Mode') : (isRtl ? 'מצב כהה' : 'Dark Mode')}
             className="btn-secondary"
             style={{
-              padding: '8px',
-              width: '38px',
-              height: '38px',
+              padding: '9px',
+              width: '40px',
+              height: '40px',
               borderRadius: '10px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: theme === 'dark' ? '#fbbf24' : '#3b82f6',
+              color: theme === 'dark' ? '#fbbf24' : '#2563eb',
             }}
           >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
@@ -206,9 +220,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onLanguageToggle}
             className="btn-secondary"
             style={{
-              padding: '8px 12px',
-              fontSize: '0.85rem',
+              padding: '9px 14px',
+              fontSize: '0.9rem',
               borderRadius: '10px',
+              fontWeight: 700,
             }}
           >
             <Globe size={16} color="#60a5fa" />
@@ -220,11 +235,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onOpenLoginModal}
             className="btn-secondary desktop-login-btn"
             style={{
-              padding: '8px 16px',
-              fontSize: '0.88rem',
+              padding: '9px 18px',
+              fontSize: '0.92rem',
               borderRadius: '10px',
               cursor: 'pointer',
               display: 'none',
+              fontWeight: 700,
             }}
           >
             <LogIn size={15} />
@@ -237,9 +253,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onOpenDemoModal}
             className="btn-primary"
             style={{
-              padding: scrolled ? '8px 18px' : '9px 20px',
-              fontSize: '0.9rem',
+              padding: scrolled ? '9px 20px' : '10px 24px',
+              fontSize: '0.95rem',
               borderRadius: '10px',
+              whiteSpace: 'nowrap',
             }}
           >
             <Sparkles size={16} />
@@ -381,7 +398,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
 
       <style>{`
-        @media (min-width: 960px) {
+        @media (min-width: 1024px) {
           .desktop-nav { display: flex !important; }
           .desktop-login-btn { display: inline-flex !important; }
           .search-text-shortcut { display: inline !important; }

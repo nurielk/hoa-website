@@ -53,7 +53,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = ({ featuresData }) => {
           >
             {featuresData.title}
           </h2>
-          <p style={{ fontSize: '1.1rem', color: '#9ca3af' }}>{featuresData.subtitle}</p>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{featuresData.subtitle}</p>
         </div>
 
         {/* Feature Cards Grid */}
@@ -103,7 +103,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = ({ featuresData }) => {
                   style={{
                     fontSize: '1.35rem',
                     fontWeight: 700,
-                    color: '#ffffff',
+                    color: 'var(--text-main)',
                     marginBottom: '12px',
                   }}
                 >
@@ -113,7 +113,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = ({ featuresData }) => {
                 <p
                   style={{
                     fontSize: '0.98rem',
-                    color: '#9ca3af',
+                    color: 'var(--text-muted)',
                     lineHeight: 1.6,
                     marginBottom: '24px',
                   }}
@@ -126,7 +126,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = ({ featuresData }) => {
               <div
                 style={{
                   paddingTop: '16px',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+                  borderTop: '1px solid var(--border-subtle)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '8px',

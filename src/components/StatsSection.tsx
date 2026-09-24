@@ -9,9 +9,9 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
     <section
       style={{
         padding: '36px 0',
-        background: 'rgba(17, 24, 39, 0.6)',
-        borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+        background: 'var(--bg-glass)',
+        borderTop: '1px solid var(--border-subtle)',
+        borderBottom: '1px solid var(--border-subtle)',
       }}
     >
       <div className="container">
@@ -36,7 +36,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
               >
                 {stat.value}
               </div>
-              <div style={{ fontSize: '0.95rem', color: '#9ca3af', fontWeight: 600 }}>
+              <div style={{ fontSize: '0.95rem', color: 'var(--text-muted)', fontWeight: 700 }}>
                 {stat.label}
               </div>
             </div>
