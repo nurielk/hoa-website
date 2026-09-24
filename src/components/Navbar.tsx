@@ -119,7 +119,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 lineHeight: 1.2,
               }}
             >
-              DayarPlus<span style={{ color: '#3b82f6' }}>.SYSTEM</span>
+              DayarPlus<span className="logo-system-suffix" style={{ color: '#3b82f6' }}>.SYSTEM</span>
             </span>
           </div>
         </a>

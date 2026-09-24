@@ -552,9 +552,15 @@ body {
     min-width: 0 !important;
   }
 
+  /* Hide .SYSTEM suffix on mobile so DayarPlus fits with breathing room */
+  .logo-system-suffix {
+    display: none !important;
+  }
+
   .navbar-header a[href="/"] span {
     font-size: 1.25rem !important;
     white-space: nowrap !important;
+    font-weight: 800 !important;
   }
 
   .navbar-header a[href="/"] > div {
