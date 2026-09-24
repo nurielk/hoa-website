@@ -299,13 +299,6 @@ export const AppContent: React.FC = () => {
             initialPlanTier={checkoutPlanTier}
             initialSubscriptionType={checkoutSubType}
             initialBillingCycle={checkoutBillingCycle}
-            onEnterDashboard={(role, buildingName) => {
-              setUserSession({
-                userRole: role,
-                buildingName: buildingName || (isRtl ? 'בניין מגורים חדש' : 'New Residential Building'),
-              });
-              setIsCheckoutModalOpen(false);
-            }}
           />
         </Suspense>
       )}

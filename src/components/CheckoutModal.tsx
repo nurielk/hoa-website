@@ -30,7 +30,6 @@ interface CheckoutModalProps {
   initialPlanTier?: PlanTier;
   initialSubscriptionType?: SubscriptionType;
   initialBillingCycle?: BillingCycle;
-  onEnterDashboard?: (userRole: 'vaad', buildingName: string, accessCode?: string) => void;
 }
 
 export const CheckoutModal: React.FC<CheckoutModalProps> = ({
@@ -40,7 +39,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   initialPlanTier = 'PRO',
   initialSubscriptionType = 'TRIAL',
   initialBillingCycle = 'MONTHLY',
-  onEnterDashboard,
 }) => {
   const isRtl = lang === 'he';
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
@@ -995,12 +993,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  if (onEnterDashboard) {
-                    onEnterDashboard('vaad', buildingName.trim() || 'בניין מגורים', successResult.building_access_code);
-                    onClose();
-                  } else if (successResult.onboarding_url) {
-                    window.location.href = successResult.onboarding_url;
-                  }
+                  const token = successResult.session_token || '';
+                  const bId = successResult.building_id || '';
+                  const targetDashboardUrl = `https://dayarplus.knuriel.workers.dev/dashboard?token=${encodeURIComponent(token)}&building=${encodeURIComponent(bId)}`;
+                  window.location.href = targetDashboardUrl;
                 }}
                 className="btn-primary"
                 style={{
@@ -1020,43 +1016,49 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 }}
               >
                 <span>{isRtl ? '🚀 כניסה ישירה לדשבורד הבניין' : '🚀 Go to Building Dashboard'}</span>
-                <ArrowIcon size={20} />
+                <ExternalLink size={20} />
               </button>
 
-              {/* External Cloud System Link (Optional) */}
-              {successResult.onboarding_url && successResult.onboarding_url.includes('dayarplus.knuriel.workers.dev') && (
-                <a
-                  href={successResult.onboarding_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                    fontSize: '0.85rem',
-                    color: '#60a5fa',
-                    textDecoration: 'none',
-                    padding: '4px',
-                  }}
-                >
-                  <span>{isRtl ? 'פתיחת אשף הזמנת דיירים במערכת הענן (Cloudflare)' : 'Open tenant wizard in cloud system'}</span>
-                  <ExternalLink size={14} />
-                </a>
-              )}
+              {/* External Cloud Onboarding Link */}
+              <a
+                href={
+                  successResult.onboarding_url ||
+                  `https://dayarplus.knuriel.workers.dev/onboard?token=${encodeURIComponent(successResult.session_token || '')}&building=${encodeURIComponent(successResult.building_id || '')}`
+                }
+                className="btn-secondary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  width: '100%',
+                  padding: '12px',
+                  fontSize: '0.92rem',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  borderRadius: '12px',
+                }}
+              >
+                <span>{isRtl ? '🛠️ פתיחת אשף הגדרת דיירים וחשבון בנק (/onboard)' : '🛠️ Open Tenant & Bank Setup Wizard (/onboard)'}</span>
+                <ExternalLink size={16} />
+              </a>
 
               <button
                 type="button"
                 onClick={onClose}
-                className="btn-secondary"
+                className="btn-ghost"
                 style={{
                   width: '100%',
                   justifyContent: 'center',
-                  padding: '12px',
-                  minHeight: '44px',
+                  padding: '10px',
+                  fontSize: '0.85rem',
+                  color: 'var(--text-muted)',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
                 }}
               >
-                <span>{isRtl ? 'סיום וחזרה לדף הבית' : 'Close and return to landing page'}</span>
+                <span>{isRtl ? 'סגירה והישארות בדף הבית' : 'Close and stay on landing page'}</span>
               </button>
             </div>
           </div>
