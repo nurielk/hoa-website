@@ -5,6 +5,7 @@ import { NewsletterForm } from './features/NewsletterForm';
 import { InteractiveCounter } from './features/InteractiveCounter';
 import { LastUpdatedBadge } from './features/LastUpdatedBadge';
 import { useToast } from '../context/ToastContext';
+import { FEATURES_CONFIG } from '../config/featuresConfig';
 
 interface FooterProps {
   lang: Language;
@@ -166,8 +167,8 @@ export const Footer: React.FC<FooterProps> = ({
       }}
     >
       <div className="container">
-        {/* Feature 13: Newsletter Form */}
-        <NewsletterForm lang={lang} />
+        {/* Feature 13: Newsletter Form (Hidden per user request) */}
+        {FEATURES_CONFIG.newsletterForm && <NewsletterForm lang={lang} />}
 
         <div
           style={{
@@ -232,14 +233,8 @@ export const Footer: React.FC<FooterProps> = ({
               <a href="#solutions" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
                 {lang === 'he' ? 'פתרונות לועד בית וחברות ניהול' : 'Solutions'}
               </a>
-              <a href="#calculator" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
-                {lang === 'he' ? 'מחשבון חיסכון' : 'ROI Calculator'}
-              </a>
               <a href="#pricing" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
                 {lang === 'he' ? 'מסלולים ומחירים' : 'Pricing'}
-              </a>
-              <a href="#announcements" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
-                {lang === 'he' ? 'לוח הודעות ועדכונים' : 'Bulletins'}
               </a>
               <a href="#faq" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
                 {lang === 'he' ? 'שאלות נפוצות' : 'FAQ'}

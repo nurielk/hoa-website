@@ -8,22 +8,20 @@ import { initUtmTracker } from './utils/utmTracker';
 
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
+import { FeatureGrid } from './components/FeatureGrid';
 import { StatsSection } from './components/StatsSection';
 import { SolutionsToggle } from './components/SolutionsToggle';
-import { FeatureGrid } from './components/FeatureGrid';
-import { SavingsCalculator } from './components/SavingsCalculator';
 import { PricingSection } from './components/PricingSection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { FaqSection } from './components/FaqSection';
 import { Footer } from './components/Footer';
 
-// 22 Requested Feature Components
+// Requested Feature Components
 import { TopAnnouncementBar } from './components/features/TopAnnouncementBar';
 import { ScrollProgressBar } from './components/features/ScrollProgressBar';
 import { BackToTop } from './components/features/BackToTop';
 import { GlobalSearchModal } from './components/features/GlobalSearchModal';
 import { FloatingContactHub } from './components/features/FloatingContactHub';
-import { AnnouncementsSection } from './components/features/AnnouncementsSection';
 import { CouponBanner } from './components/features/CouponBanner';
 import { CookieConsentBanner } from './components/features/CookieConsentBanner';
 
@@ -174,52 +172,41 @@ export const AppContent: React.FC = () => {
 
       {/* Main Content Landmark */}
       <main id="main-content" tabIndex={-1} style={{ flex: 1, outline: 'none' }}>
-        {/* 1. Hero Section with Interactive Live App Preview */}
+        {/* 1. Hero Section */}
         <HeroSection
           lang={lang}
           heroData={currentContent.hero}
-          mockupData={currentContent.appMockup}
           onOpenDemoModal={() => setIsDemoModalOpen(true)}
         />
 
-        {/* 2. Key Impact Statistics Banner */}
+        {/* 2. Complete Product Feature Grid ("כל מה שהבניין שלך צריך - במקום אחד") - Moved ABOVE StatsSection per user request */}
+        <FeatureGrid featuresData={currentContent.features} />
+
+        {/* 3. Key Impact Statistics Banner (550+ בניינים, 99.2% גבייה, 18h שעות שנחסכו, 4.9/5) */}
         <StatsSection stats={currentContent.hero.stats} />
 
-        {/* 3. Target Audience Segment Toggle (Vaad Bayit vs Management Co) */}
+        {/* 4. Target Audience Segment Toggle (Vaad Bayit vs Management Co) */}
         <SolutionsToggle
           lang={lang}
           solutionsData={currentContent.solutions}
           onOpenDemoModal={() => setIsDemoModalOpen(true)}
         />
 
-        {/* 4. Complete Product Feature Grid */}
-        <FeatureGrid featuresData={currentContent.features} />
-
-        {/* 5. Interactive ROI & Time Savings Calculator (Feature 17: Confirm modal, Feature 21: Copy summary) */}
-        <SavingsCalculator
-          lang={lang}
-          calcData={currentContent.calculator}
-          onOpenDemoModal={() => setIsDemoModalOpen(true)}
-        />
-
-        {/* 6. Transparent Tier Pricing & Plan Comparison (Feature 19: Print routine, Feature 22: Last updated badge) */}
+        {/* 5. Transparent Tier Pricing & Plan Comparison (Feature 19: Print routine, Feature 22: Last updated badge) */}
         <PricingSection
           lang={lang}
           pricingData={currentContent.pricing}
           onOpenDemoModal={() => setIsDemoModalOpen(true)}
         />
 
-        {/* 7. Customer Reviews & Social Proof */}
+        {/* 6. Customer Reviews & Social Proof */}
         <TestimonialsSection testimonialsData={currentContent.testimonials} />
 
-        {/* 8. System Announcements & Bulletins Section (Feature 12) */}
-        <AnnouncementsSection lang={lang} />
-
-        {/* 9. Frequently Asked Questions (Feature 11: FAQ Accordion with Categories & Search) */}
+        {/* 7. Frequently Asked Questions (Feature 11: FAQ Accordion with Categories & Search) */}
         <FaqSection faqData={currentContent.faq} lang={lang} />
       </main>
 
-      {/* 10. Footer (Feature 13: Newsletter, Feature 14: Interactive Counter, Feature 19: Print Routine, Feature 21: Copy Phone/Email, Feature 22: Last Updated) */}
+      {/* 8. Footer (Feature 14: Interactive Counter, Feature 19: Print Routine, Feature 21: Copy Phone/Email, Feature 22: Last Updated) */}
       <Footer
         lang={lang}
         footerData={currentContent.footer}

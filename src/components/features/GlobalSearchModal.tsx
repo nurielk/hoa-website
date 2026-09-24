@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Search, X, ArrowLeft, ArrowRight, Zap, HelpCircle, Layers, Tag, Calculator } from 'lucide-react';
+import { Search, X, ArrowLeft, ArrowRight, Zap, HelpCircle, Layers, Tag } from 'lucide-react';
 import { Language } from '../../types';
 import { contentData } from '../../data/contentData';
 
@@ -107,16 +107,6 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         icon: <Tag size={16} color="#fbbf24" />,
         targetId: 'pricing',
       });
-    });
-
-    // Calculator
-    items.push({
-      id: 'calc-savings',
-      title: currentContent.calculator.title,
-      description: currentContent.calculator.subtitle,
-      category: isRtl ? 'כלים' : 'Tools',
-      icon: <Calculator size={16} color="#06b6d4" />,
-      targetId: 'calculator',
     });
 
     return items;

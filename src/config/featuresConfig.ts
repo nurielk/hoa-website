@@ -1,6 +1,6 @@
 /**
  * Feature Toggles Configuration
- * Allows easy enabling/disabling of any of the 22 new features without breaking existing functionality.
+ * Allows easy enabling/disabling of any of the features without breaking existing functionality.
  */
 export const FEATURES_CONFIG = {
   darkMode: true,            // 1. מצב כהה ובהיר
@@ -14,8 +14,8 @@ export const FEATURES_CONFIG = {
   skipToContent: true,       // 9. החלקה ודילוג לתוכן נגיש
   floatingContactHub: true,  // 10. כפתור קשר צף רב-ערוצי
   faqAccordion: true,        // 11. קטע שאלות נפוצות מורחב עם קטגוריות
-  announcementsSection: true,// 12. סעיף הודעות ועדכוני מערכת
-  newsletterForm: true,      // 13. הרשמה לעלון חדשות
+  announcementsSection: false,// 12. סעיף הודעות ועדכוני מערכת (מוסתר כרגע)
+  newsletterForm: false,      // 13. הרשמה לעלון חדשות (מוסתר כרגע)
   interactiveCounter: true,  // 14. כפתור סופר ומונה מעורבות
   couponBanner: true,        // 15. באנר קופון ומבצע
   cookieConsent: true,       // 16. תג ובאנר קוקיז
@@ -26,4 +26,6 @@ export const FEATURES_CONFIG = {
   copyToClipboard: true,     // 21. העתקה ללוח עם טוסט
   lastUpdatedDates: true,    // 22. תאריכי עדכון אחרון
   passwordToggle: true,      // 23. הצגה והסתרת סיסמה
+  savingsCalculator: false,  // 24. מחשבון חיסכון (הוסר כרגע)
+  digitalDashboardMockup: false // 25. לוח בקרה דיגיטלי (הוסר כרגע)
 } as const;

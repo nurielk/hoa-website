@@ -6,7 +6,6 @@ export const contentData = {
     nav: [
       { id: 'features', label: 'תכונות' },
       { id: 'solutions', label: 'למי זה מתאים' },
-      { id: 'calculator', label: 'מחשבון חיסכון' },
       { id: 'pricing', label: 'מסלולים ומחירים' },
       { id: 'testimonials', label: 'המלצות' },
       { id: 'faq', label: 'שאלות נפוצות' },
@@ -313,7 +312,6 @@ export const contentData = {
     nav: [
       { id: 'features', label: 'Features' },
       { id: 'solutions', label: 'Solutions' },
-      { id: 'calculator', label: 'ROI Calculator' },
       { id: 'pricing', label: 'Pricing' },
       { id: 'testimonials', label: 'Testimonials' },
       { id: 'faq', label: 'FAQ' },

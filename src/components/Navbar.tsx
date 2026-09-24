@@ -146,21 +146,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               {item.label}
             </a>
           ))}
-          {/* Link to announcements section */}
-          <a
-            href="#announcements"
-            style={{
-              color: 'var(--text-muted)',
-              textDecoration: 'none',
-              fontSize: '0.92rem',
-              fontWeight: 600,
-              transition: 'color 0.2s ease',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#3b82f6')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-          >
-            {isRtl ? 'הודעות' : 'Bulletins'}
-          </a>
         </nav>
 
         {/* Action Controls & Utilities */}
@@ -343,23 +328,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {item.label}
               </a>
             ))}
-
-            <a
-              href="#announcements"
-              onClick={() => setMobileMenuOpen(false)}
-              style={{
-                color: 'var(--text-main)',
-                textDecoration: 'none',
-                fontSize: '1.1rem',
-                fontWeight: 600,
-                padding: '10px 14px',
-                borderRadius: '10px',
-                background: 'var(--bg-glass)',
-                border: '1px solid var(--border-subtle)',
-              }}
-            >
-              {isRtl ? 'לוח הודעות ועדכונים' : 'Announcements'}
-            </a>
           </div>
 
           <hr style={{ border: 'none', borderTop: '1px solid var(--border-subtle)', margin: '8px 0' }} />
