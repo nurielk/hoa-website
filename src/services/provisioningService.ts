@@ -156,7 +156,9 @@ export async function provisionTenantInProjectB(
     const data = await response.json();
 
     if (!response.ok || !data.success) {
-      throw new Error(data.error || `Provisioning failed with status: ${response.status}`);
+      const err = new Error(data.error || `Provisioning failed with status: ${response.status}`);
+      (err as any).isServerError = true;
+      throw err;
     }
 
     // Normalize onboarding URL if remote server returns localhost URL so user never gets sent to localhost
@@ -166,7 +168,12 @@ export async function provisionTenantInProjectB(
 
     return data as ProvisioningSuccessResponse;
   } catch (err: any) {
-    console.warn('[ProvisioningService] Remote API unreachable or returned error:', err);
+    if (err?.isServerError) {
+      // Real API validation rejection (e.g. 409 User Already Exists, 400 Bad Request) - rethrow to inform user
+      throw err;
+    }
+
+    console.warn('[ProvisioningService] Remote API unreachable or returned network error:', err);
 
     // If local dev or endpoint offline, generate a reliable client-side sandbox onboarding session
     // so user flow and demonstrations remain 100% operational
