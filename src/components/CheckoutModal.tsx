@@ -121,9 +121,72 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   const GOOGLE_CLIENT_ID = '699076940314-ntbo27781iep8e5fjm96v760cqi9tv5c.apps.googleusercontent.com';
 
+  const ensureGoogleLoaded = async (): Promise<any> => {
+    if ((window as any).google?.accounts?.oauth2) {
+      return (window as any).google;
+    }
+    return new Promise((resolve) => {
+      let script = document.getElementById('google-gsi-client') as HTMLScriptElement;
+      if (!script) {
+        script = document.createElement('script');
+        script.id = 'google-gsi-client';
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        document.head.appendChild(script);
+      }
+      script.addEventListener('load', () => resolve((window as any).google));
+      setTimeout(() => resolve((window as any).google), 1500);
+    });
+  };
+
+  const openDirectGoogleOAuth = () => {
+    const redirectUri = window.location.origin;
+    const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=email%20profile%20openid&prompt=select_account`;
+    
+    const popup = window.open(oauthUrl, 'GoogleAuth', 'width=520,height=620,menubar=no,toolbar=no');
+    if (!popup) {
+      setErrorMessage(isRtl ? 'פתיחת חלון ההתחברות של Google נחסמה בדפדפן. אנא אשר פתיחת חלונות קופצים (Popups).' : 'Google popup was blocked. Please allow popups.');
+      return;
+    }
+
+    const checkTimer = setInterval(async () => {
+      try {
+        if (!popup || popup.closed) {
+          clearInterval(checkTimer);
+          return;
+        }
+        if (popup.location && popup.location.href && popup.location.href.includes(redirectUri)) {
+          const hash = popup.location.hash;
+          if (hash && hash.includes('access_token=')) {
+            clearInterval(checkTimer);
+            popup.close();
+            const params = new URLSearchParams(hash.replace('#', '?'));
+            const accessToken = params.get('access_token');
+            if (accessToken) {
+              const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: `Bearer ${accessToken}` },
+              });
+              if (res.ok) {
+                const profile = await res.json();
+                if (profile.email) setAdminEmail(profile.email.toLowerCase());
+                if (profile.name) setAdminName(profile.name);
+                setIsGoogleLinked(true);
+                setErrorMessage(null);
+              }
+            }
+          }
+        }
+      } catch (_) {
+        // Cross-origin access until Google redirects back to our origin
+      }
+    }, 400);
+  };
+
   // Google SSO Quick-Fill Handler via Official Google OAuth 2.0
-  const handleGoogleQuickFill = () => {
-    const google = (window as any).google;
+  const handleGoogleQuickFill = async () => {
+    setErrorMessage(null);
+    const google = await ensureGoogleLoaded();
+
     if (google?.accounts?.oauth2) {
       try {
         const tokenClient = google.accounts.oauth2.initTokenClient({
@@ -148,28 +211,19 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               }
             }
           },
+          error_callback: () => {
+            openDirectGoogleOAuth();
+          }
         });
         tokenClient.requestAccessToken({ prompt: 'select_account' });
         return;
       } catch (err) {
-        console.warn('Google TokenClient init failed, falling back:', err);
+        console.warn('Google TokenClient init failed, opening direct popup:', err);
       }
     }
 
-    // Graceful fallback if Google SDK not yet loaded or blocked by privacy extension
-    const defaultG = adminEmail.trim() || 'israel.cohen@gmail.com';
-    const chosen = window.prompt(
-      isRtl ? 'הזן את כתובת ה-Google שלך למילוי אוטומטי וחיבור SSO:' : 'Enter your Google email for SSO integration:',
-      defaultG
-    );
-    if (!chosen) return;
-    const cleanG = chosen.trim().toLowerCase();
-    setAdminEmail(cleanG);
-    if (!adminName.trim()) {
-      const gName = cleanG.split('@')[0].replace(/[._]/g, ' ');
-      setAdminName(gName.charAt(0).toUpperCase() + gName.slice(1));
-    }
-    setIsGoogleLinked(true);
+    // Direct Google OAuth popup (works universally without any SDK dependencies)
+    openDirectGoogleOAuth();
   };
 
   // Validations
