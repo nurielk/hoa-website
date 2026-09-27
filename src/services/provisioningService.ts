@@ -146,16 +146,26 @@ export async function provisionTenantInProjectB(
     'X-API-KEY': PROVISIONING_API_KEY,
   };
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 6000);
+
   try {
     const response = await fetch(PROVISIONING_API_URL, {
       method: 'POST',
       headers,
       body: JSON.stringify(payload),
+      signal: controller.signal,
     });
+    clearTimeout(timeoutId);
 
     const data = await response.json();
 
     if (!response.ok || !data.success) {
+      if (response.status === 409 || data.code === 'USER_EXISTS') {
+        const conflictErr = new Error('משתמש עם כתובת דוא"ל זו כבר רשום במערכת. באפשרותך להתחבר ישירות דרך מסך ההתחברות.');
+        (conflictErr as any).isServerError = true;
+        throw conflictErr;
+      }
       const err = new Error(data.error || `Provisioning failed with status: ${response.status}`);
       (err as any).isServerError = true;
       throw err;
@@ -168,12 +178,13 @@ export async function provisionTenantInProjectB(
 
     return data as ProvisioningSuccessResponse;
   } catch (err: any) {
+    clearTimeout(timeoutId);
     if (err?.isServerError) {
       // Real API validation rejection (e.g. 409 User Already Exists, 400 Bad Request) - rethrow to inform user
       throw err;
     }
 
-    console.warn('[ProvisioningService] Remote API unreachable or returned network error:', err);
+    console.warn('[ProvisioningService] Remote API unreachable, timed out, or returned network error:', err);
 
     // If local dev or endpoint offline, generate a reliable client-side sandbox onboarding session
     // so user flow and demonstrations remain 100% operational
