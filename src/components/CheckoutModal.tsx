@@ -119,8 +119,44 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Google SSO Quick-Fill Handler
+  const GOOGLE_CLIENT_ID = '699076940314-ntbo27781iep8e5fjm96v760cqi9tv5c.apps.googleusercontent.com';
+
+  // Google SSO Quick-Fill Handler via Official Google OAuth 2.0
   const handleGoogleQuickFill = () => {
+    const google = (window as any).google;
+    if (google?.accounts?.oauth2) {
+      try {
+        const tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: GOOGLE_CLIENT_ID,
+          scope: 'email profile openid',
+          callback: async (tokenResponse: any) => {
+            if (tokenResponse?.access_token) {
+              try {
+                const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                  headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+                });
+                if (res.ok) {
+                  const profile = await res.json();
+                  if (profile.email) setAdminEmail(profile.email.toLowerCase());
+                  if (profile.name) setAdminName(profile.name);
+                  setIsGoogleLinked(true);
+                  setErrorMessage(null);
+                  return;
+                }
+              } catch (profileErr) {
+                console.warn('Failed to fetch userinfo from Google:', profileErr);
+              }
+            }
+          },
+        });
+        tokenClient.requestAccessToken({ prompt: 'select_account' });
+        return;
+      } catch (err) {
+        console.warn('Google TokenClient init failed, falling back:', err);
+      }
+    }
+
+    // Graceful fallback if Google SDK not yet loaded or blocked by privacy extension
     const defaultG = adminEmail.trim() || 'israel.cohen@gmail.com';
     const chosen = window.prompt(
       isRtl ? 'הזן את כתובת ה-Google שלך למילוי אוטומטי וחיבור SSO:' : 'Enter your Google email for SSO integration:',
