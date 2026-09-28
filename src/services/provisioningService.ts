@@ -95,9 +95,13 @@ const PROVISIONING_API_KEY =
   import.meta.env.VITE_PROVISIONING_API_KEY ||
   'dp-secret-onboarding-key-2026';
 
-const APP_BASE_URL =
+export const APP_BASE_URL =
   import.meta.env.VITE_APP_URL ||
   'https://dayarplus.knuriel.workers.dev';
+
+export const APP_LOGIN_URL =
+  import.meta.env.VITE_APP_LOGIN_URL ||
+  `${APP_BASE_URL}/login`;
 
 /**
  * 1. PCI-DSS Compliant Card Tokenization / Pre-Authorization

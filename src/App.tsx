@@ -5,6 +5,7 @@ import { contentData } from './data/contentData';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './context/ToastContext';
 import { initUtmTracker } from './utils/utmTracker';
+import { APP_LOGIN_URL } from './services/provisioningService';
 
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
@@ -203,7 +204,9 @@ export const AppContent: React.FC = () => {
         lang={lang}
         onLanguageToggle={toggleLanguage}
         onOpenDemoModal={() => handleOpenCheckout('PRO', 'TRIAL', 'MONTHLY')}
-        onOpenLoginModal={() => setIsLoginModalOpen(true)}
+        onOpenLoginModal={() => {
+          window.location.href = APP_LOGIN_URL;
+        }}
         onOpenSearch={() => setIsSearchOpen(true)}
         navItems={currentContent.nav}
         buttons={currentContent.buttons}

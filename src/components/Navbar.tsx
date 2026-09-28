@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Language, NavItem } from '../types';
 import { Building2, Globe, Menu, X, Sparkles, Sun, Moon, Search, LogIn } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { APP_LOGIN_URL } from '../services/provisioningService';
 
 interface NavbarProps {
   lang: Language;
@@ -46,6 +47,18 @@ export const Navbar: React.FC<NavbarProps> = ({
       document.body.style.overflow = '';
     };
   }, [mobileMenuOpen]);
+
+  const handleLoginClick = (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey) {
+      window.open(APP_LOGIN_URL, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    if (onOpenLoginModal) {
+      onOpenLoginModal();
+    } else {
+      window.location.href = APP_LOGIN_URL;
+    }
+  };
 
   return (
     <header
@@ -232,7 +245,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Login Button */}
           <button
-            onClick={onOpenLoginModal}
+            onClick={handleLoginClick}
             className="btn-secondary desktop-login-btn"
             style={{
               padding: '9px 18px',
@@ -242,6 +255,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               display: 'none',
               fontWeight: 700,
             }}
+            title={lang === 'he' ? 'כניסה מאובטחת למערכת DayarPlus' : 'Secure Login to DayarPlus System'}
+            aria-label={buttons.login}
+            id="desktop-login-btn"
           >
             <LogIn size={15} />
             <span>{buttons.login}</span>
@@ -352,12 +368,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Mobile Actions */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <button
-              onClick={() => {
+              onClick={(e) => {
                 setMobileMenuOpen(false);
-                onOpenLoginModal();
+                handleLoginClick(e);
               }}
               className="btn-secondary"
               style={{ width: '100%', justifyContent: 'center', padding: '12px' }}
+              title={lang === 'he' ? 'כניסה מאובטחת למערכת DayarPlus' : 'Secure Login to DayarPlus System'}
+              aria-label={buttons.login}
             >
               <LogIn size={18} />
               <span>{buttons.login}</span>

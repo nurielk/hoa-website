@@ -6,6 +6,7 @@ import { InteractiveCounter } from './features/InteractiveCounter';
 import { LastUpdatedBadge } from './features/LastUpdatedBadge';
 import { useToast } from '../context/ToastContext';
 import { FEATURES_CONFIG } from '../config/featuresConfig';
+import { APP_LOGIN_URL } from '../services/provisioningService';
 
 interface FooterProps {
   lang: Language;
@@ -238,6 +239,22 @@ export const Footer: React.FC<FooterProps> = ({
               </a>
               <a href="#faq" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
                 {lang === 'he' ? 'שאלות נפוצות' : 'FAQ'}
+              </a>
+              <a
+                href={APP_LOGIN_URL}
+                style={{
+                  color: '#60a5fa',
+                  textDecoration: 'none',
+                  fontWeight: 600,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  marginTop: '4px',
+                }}
+                title={lang === 'he' ? 'כניסה מאובטחת למערכת DayarPlus' : 'Secure Login to DayarPlus System'}
+              >
+                <span>{lang === 'he' ? 'התחברות למערכת' : 'System Login'}</span>
+                <span style={{ fontSize: '0.85rem' }}>↗</span>
               </a>
             </div>
           </div>
