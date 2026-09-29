@@ -14,7 +14,7 @@ interface FaqSectionProps {
 }
 
 export const FaqSection: React.FC<FaqSectionProps> = ({ faqData, lang = 'he' }) => {
-  const [openIds, setOpenIds] = useState<string[]>(['faq-1']);
+  const [openIds, setOpenIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
