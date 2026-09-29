@@ -40,7 +40,7 @@ const getIcon = (iconName: string) => {
 
 export const FeatureGrid: React.FC<FeatureGridProps> = ({ featuresData }) => {
   return (
-    <section id="features" style={{ padding: '90px 0', background: 'rgba(17, 24, 39, 0.4)' }}>
+    <section id="features" style={{ padding: '90px 0', position: 'relative' }}>
       <div className="container">
         {/* Header */}
         <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 60px' }}>
