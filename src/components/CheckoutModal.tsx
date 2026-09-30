@@ -342,12 +342,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         },
       };
 
-      const result = await Promise.race([
-        provisionTenantInProjectB(payload),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error(isRtl ? 'זמן ההמתנה לשרת אזל. אנא נסה שנית או פנה לתמיכה.' : 'Request timed out. Please try again.')), 9000)
-        ),
-      ]);
+      const result = await provisionTenantInProjectB(payload);
 
       setSuccessResult(result);
       setStep(3);

@@ -150,8 +150,9 @@ export async function provisionTenantInProjectB(
     'X-API-KEY': PROVISIONING_API_KEY,
   };
 
+  // Allow 25-second timeout for full tenant provisioning (Building, Units, User, Subscription)
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 6000);
+  const timeoutId = setTimeout(() => controller.abort(), 25000);
 
   try {
     const response = await fetch(PROVISIONING_API_URL, {
@@ -162,15 +163,16 @@ export async function provisionTenantInProjectB(
     });
     clearTimeout(timeoutId);
 
-    const data = await response.json();
+    const data = await response.json().catch(() => null);
 
-    if (!response.ok || !data.success) {
-      if (response.status === 409 || data.code === 'USER_EXISTS') {
+    if (!response.ok || !data || !data.success) {
+      if (response?.status === 409 || data?.code === 'USER_EXISTS') {
         const conflictErr = new Error('משתמש עם כתובת דוא"ל זו כבר רשום במערכת. באפשרותך להתחבר ישירות דרך מסך ההתחברות.');
         (conflictErr as any).isServerError = true;
         throw conflictErr;
       }
-      const err = new Error(data.error || `Provisioning failed with status: ${response.status}`);
+      const errMsg = data?.error || data?.message || `שגיאה בהקמת הבניין מול השרת (סטטוס ${response.status})`;
+      const err = new Error(errMsg);
       (err as any).isServerError = true;
       throw err;
     }
@@ -188,35 +190,14 @@ export async function provisionTenantInProjectB(
       throw err;
     }
 
-    console.warn('[ProvisioningService] Remote API unreachable, timed out, or returned network error:', err);
+    console.error('[ProvisioningService] Remote API unreachable, timed out, or returned network error:', err);
 
-    // If local dev or endpoint offline, generate a reliable client-side sandbox onboarding session
-    // so user flow and demonstrations remain 100% operational
-    const mockBuildingId = Math.floor(100 + Math.random() * 900);
-    const normalizedName = payload.building.name.replace(/[^a-zA-Z0-9]/g, '').slice(0, 6).toUpperCase() || 'RES';
-    const accessCode = `HOA-${normalizedName}-${Math.floor(1000 + Math.random() * 9000)}`;
-    const sessionToken = `mock_sso_${Date.now()}_${Math.random().toString(36).substring(2, 12)}`;
-    const trialDays = 30;
-    const now = new Date();
-    const trialEndDate = new Date(now.getTime() + trialDays * 24 * 60 * 60 * 1000).toISOString();
-    const onboardingUrl = `${APP_BASE_URL}/onboard?token=${sessionToken}&building=${mockBuildingId}`;
+    const isTimeout = err?.name === 'AbortError';
+    const friendlyError = isTimeout
+      ? new Error('זמן ההמתנה לשרת אזל בעת הקמת הבניין (Timeout). אנא וודא חיבור תקין לרשת ונסה שוב.')
+      : new Error(err?.message || 'חלה שגיאת תקשורת מול השרת בעת הקמת הבניין. אנא נסה שוב.');
 
-    return {
-      success: true,
-      message: 'Tenant and Administrator successfully provisioned (Sandbox Mode)',
-      tenant_id: mockBuildingId,
-      building_id: mockBuildingId,
-      user_id: 1,
-      building_access_code: accessCode,
-      session_token: sessionToken,
-      onboarding_url: onboardingUrl,
-      subscription: {
-        type: payload.plan.subscriptionType,
-        status: payload.plan.subscriptionType === 'TRIAL' ? 'TRIAL_ACTIVE' : 'ACTIVE',
-        planTier: payload.plan.planTier,
-        trialEndDate: payload.plan.subscriptionType === 'TRIAL' ? trialEndDate : undefined,
-        nextBillingDate: trialEndDate,
-      },
-    };
+    (friendlyError as any).isServerError = true;
+    throw friendlyError;
   }
 }
